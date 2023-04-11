@@ -93,3 +93,44 @@ Chapter 4 - Markov Networks
 Chapter 5 - 
 
 OMG THERE ARE 23 CHAPTERS, I'll write this later
+
+1.3.2 Reader's Guide
+This book relate to multiple fields and techniques from other disciplines
+	Probability Theory
+	Computer Science
+	Information Theory
+	Optimization
+	Statistics and more
+
+1.3.3 Connection to Other Disciplines
+From Computer Science, We look at graph as a data structure.
+From  Algorithmic Ideas, the ability to manipulate probability distributions using discrete data structures and key elements that make the probabilisitc manipulations tractable.
+Decision Theory extends these basic ideas to the task of decision making under uncertianty.
+
+These models inherit the idea of using a declarative representation of the world to separate procedural reasoning from our domain knowledge.
+
+Statistics plays a role in representation and learning models from data.
+
+Optimization plays a role in providing algorithms for approximate inference and for learning models from the data.
+
+Bayesian Network - arose in the setting of modeling genetic inheritance in human family trees.
+
+Information Theory plays a dual role in this.	
+	Entropy and Information 
+	Coding theory based on the relationship between inference in probabilistic models and the task of decoding messages sent over a noisy network --> error correcting codes and practice of approximate message-passing algorithms in graphical models.
+
+
+1.3.3.1 What have we gained?
+	The use of structure to allow compact representation, effective reasoning, and feasible learning of general-purpose, factored, probabilistic models. These elements provide us with a general infrastructure for reasoning and learning about complex domains.
+
+By using declarative representation, we essentially separate out the description of the model for the particular application, and the general purpose algorithms used in inference and learning. Thus, this framework provides a general algorithmic toolkit that can be applied to many different domains.
+
+These models provide a formal framework for a variety of fundamental problems
+	1. Notion of conditional independence and its explicit graph based representation - sensor variables - Bayesian conditioning
+	2. Proviees formal measure for the model quality 
+	This measure underlies much of our work on learning models from data.
+	The temporal models we define provide a formal framework for defining a general trend toward persistence of state over time, in a way that does not raise inconsistencies when change does occur.
+
+Algorithms for which no theoretical analysis exists are tried out in practice, and the profile of where they succeed and fail often provides the basis for subsequent analysis.
+
+DID NOT READ HISTORICAL NOTES
