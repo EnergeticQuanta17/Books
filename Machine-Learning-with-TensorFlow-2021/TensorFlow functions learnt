@@ -1,0 +1,46 @@
+tf.constant()
+
+tf.math.negative()
+
+tf.convert_to_tensor()
+
+print(tensor) --> name, shape, dtype
+
+tf.zeros(shape)
+
+tf.ones(shape)
+
+https://github.com/tensorflow/docs/tree/r1.15/site/en/api_docs/python/tf/math
+
+tf.add(x,y)
+
+tf.subtract(x,y)
+
+tf.multiply(x,y)
+
+tf.pow(x,y) --> elementwise x to the power of y
+
+tf.exp(x) --> elementwise
+
+tf.sqrt(x) --> elementwise
+
+tf.div(x,y) --> elementwise
+
+tf.truediv(x,y) --> tf.div with arguments float
+
+tf.floordiv(x,y) --> tf.truediv but floors the final answer into an integer
+
+tf.mod(x,y) --> elementwise remainder from division
+
+with tf.Session() as sess:
+    result = sess.run(negMatrix) --> EXPLORE THIS WHEN FREE
+
+tf.placeholder(tf.float32)
+
+tf.Variable(False)
+
+img = tf.placeholder(tf.float32, [None, None, None, 3])
+my_img_summary = tf.summary.image("img", img)
+
+add_summary method --> to put it on TensorBoard
+

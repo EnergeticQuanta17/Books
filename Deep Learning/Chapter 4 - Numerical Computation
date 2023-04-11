@@ -1,0 +1,159 @@
+Machine Learning requires a high amount of numerical computation.
+	Algorithms that solve mathematical problems --> update estimates via iterative process
+		rather than analytically deriving a formula
+
+Common operations:-
+	Optimization
+	Solving system of linear equations
+
+What is hard --> when the function involves real numbers, which cannot be represented precisely using a finite amount of memory.
+
+OVERFLOW and UNDERFLOW
+	Rounding error is problematic, especially when it compounds across many operations
+
+	"UnderFlow" --> a form of rounding error
+		numbers near zero --> are rounded to zero
+		Many functions behave qualitatively differently when their argument is zero rather than close to zero.
+
+	"OverFlow" --> highly damaging form of numerical error
+
+	Softmax function
+		Consider the case where all the x(i) are equal ==> then we expect all outputs to be 1/n.
+
+		But if x(i)'s are very negative then UnderFlow happens and 0/0 happens
+
+		and if x(i)'s are very positive, then OverFlow happens and NaN happens
+
+
+	Theano (2010; 2012) --> is an example of a software package that automatically detects and stabilizes many common numericaly unstable expressions that arise in the context of deep learning.
+
+POOR CONDIITONING
+	Conditioning --> how rapidly a function changes with respect to small changes in its inputs.
+
+	Functions that change rapidly with small nudges to input --> can be problematic for scientific computation
+
+	Condition number
+		Consider the function f(x) = (A{matrix} inverse) (x{vector})
+			When A has an eigendecomposition, its "condition number" is the abs of the ratio of largest and smallest eigenvalues.
+
+		When condition number is large, then matrix inversion is particularly sensitive to error in input.
+
+		This sensitivity is an intrinsic property of the matrix itself, not particularly due the error caused by rounding.
+
+		Poorly conditioned matrices amplify the pre-existing errors when we multiply by the true matrix inverse --> SOMEWHAT DIDNT UNDERSTAND...
+
+		In practice, the error will be compounded furthur by numerical errors in the "inversion process" itself.
+
+GRADIENT-BASED OPTIMIZATION
+	We usually do minimization. 
+	And for maximization we minimize -f(x)
+
+	The function to optimize is called --> "objective function" or "criterion"
+		When minimizing it is also called --> "loss function", "cost function", "error function"
+
+	Notate the value that maximizes or minimizes a cost function with a superscript *.
+		Example:- x* = argmin{over all x} f(x)
+
+	Gradient descent --> f( x - epsilon * sign(f'(x)) ) is lesser than f(x) for small enough epsilon.
+
+	local minimum
+	local maximum
+	saddle point
+
+	we often try to minimize a function which has multiple local minimas --> hence we settle for finding a value of f that is very low but not necessarily minimal in any formal sense
+
+	For the concept of "minimization" to make sense, we must have only one(scalar) output.
+
+	For functions with multiple inputs we must make use of the concept of "partial derivatives"
+
+	GRADIENT DESCENT
+		epsilon --> learning rate
+
+		usually we pick small values for epsilon
+
+		LINE SEARCH STRATEGY
+			Another way is to evaluate f(x- epsilon * del(f(x))) for several values of epsilon and choose the one that results in the smallest objective function value.
+
+		Converges when every element of the gradient is zero.
+
+	In some cases we can directly compute the value of x for which f'(x)=0 and then do the computation.
+
+	We can generalize the concept of taking small steps in continuous case --> to the discrete case
+	Ascending an objective function of discete parameters is called "hill climbing".
+
+	JACOBIAN and HESSIAN MATRICES
+		Partial derivatives of a function whose input and output are both vectors.
+			Jacobian --> The matrix containing all partial derivatives
+
+		Double derivative --> tells us whether a gradient step will cause as much of an improvement as we would expect based on the gradient alone.
+
+		Think of second gradient --> as measuring the curvature of the curve
+			0 is equivalent to no curvature, perfectly flat line
+			>0 --> the function curves upward, so the cost function can decrease by less than epsilon
+
+			positive curvature --> function decreases more slowly than expected and eventually begin to increase (steps that are too large can increase the function inadvertently)
+
+		Hessian is the Jacobian of the gradient.
+
+	Anywhere that the second partial derivatives are continuous, the differential operators COMMUTE.	
+		That means the Hessian is symmetric.
+
+		Because Hessian is symmetric --> it can be decomposed into a set of real eigenvalues and  an orthogonal basis of eigenvectors.
+		The second derivative in a specific direction represented by a unit vector "d" is given by 
+			(d{vector} transpose) (H{matrix}) (d{vector})
+			
+			When d --> eigenvector of H, the second derivative in that direction is given by the corresponding eigenvalue.
+
+			For other directions of "d", the directional second derivative is a weighted average of all the eigenvalues, with weights between 0 and 1, and eigenvectors that have a smaller angle with "d" receiving more weight. The maximum eigenvalue determines the maximum second derivative and the minimum eigenvalue determines the minimum second derivative.
+
+	"Reporting from 'extra point refer laptop notes"
+		To the extent that the function we minimize can be approximated well by a quadratic function, the eigenvalues of the Hessian thus determine the scale of the learning rate.
+
+	Second derivative test
+		f''(x) = 0 --> then the test is inconclusive
+			--> x may be a saddle point or a part of a flat region.
+
+	In multiple dimensions, we need to examine all the second derivatives of the function.
+	Using the eigendecomposition of the Hessian matrix, we can generalize the second derivative test to multiple dimensions. 
+	At critical points where del(f(x))=0, we can examine the Hessian to determine whether the critical point is a local minimum or local maximum or saddle point.
+
+	Optimization Algorithms that use only the gradient are called --> "first-order Optimization Algorithms".
+		And the Algorithms that use the Hessian are called --> "second-order Optimization Algorithms"
+
+	"Lipschitz continuous" or "Lipschitz continuous derivatives" --> is a function f whose rate of change is bounded by a Lipschitz constant "L"
+		This property ensures that small change in input will have small change in output.
+
+		Fairly weak constraint so we can easily make our model obey this constraint.
+
+	CONVEX OPTIMIZATION
+		Many more garuntees by making stronger restrictions.
+
+		Applicable only for convex functions --> functions for which the Hessian is positive semidefinite everywhere.
+			They lack saddle points.
+			And their local minima are necessarily global minima.
+
+		Difficult to express deep learning problems in this form.
+
+CONSTRAINED OPTIMIZATION
+	Instead of all possible values of x, we want values of x in some set S.
+
+	A common approach is to impose a norm constraint --> norm of all the x values <= 1
+
+	One way to solve constrained optimization --> alter gradient descent algorithm
+
+	A more sophisticated approach is to design a different, unconstrained optimization problem wjose solution can be converted into a solution of the original constrainted optimization problem
+		requires creativity
+		transformation between optimization problems must be designed specifically for each case we encounter.
+
+	HALF-PAGE PARAGRAPH ABOUT KKT approach--> COULD NOT UNDERSTAND
+
+	A simple set of properties describe the optimal points of constrained optimization properties.
+	These properties are called the "KKT conditions"
+		They are necessary but not always sufficient conditions
+
+		The conditions are:-
+			1. The gradient of the generalized Lagrangian is zero
+			2. All constraints on both vector x and the KKT multipliers are satisfied
+			3. The inequality constrains exhibit "complementary slackness" --> alpha vector dot product with h(x vector) = 0
+
+		

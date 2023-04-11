@@ -1,0 +1,67 @@
+*1.2 Structured Probabilistic Models*
+General purpose framework for constructing and using probabilistic models of complex systems
+
+Complex systems are characterized by the presence of multiple interrelated aspects many of which relate to the reasoning task.
+
+In order to do so using principled probabilisitc reasoning, we need to construct a joint distribution over the space of all possible assignments.\
+This type of model allows us to answer a broad range of interesting queries.
+
+
+1.2.1 Probabilistic Graphical Models
+This book describes the framework of probabilistic graphical models which provides a mechanism for exploiting the structure in complex distributions to describe them compactly, and in a way that allows them to constructed and utilized effectively.
+
+PGMs use a graph-based representation as the basis for compactly encoding a complex distribution over a high-dimensional space.
+
+	Bayesian networks and Markov networks, also known as Markov random fields, are both types of graphical models used to represent and reason about probabilistic relationships among variables. However, there are some key differences between the two models:
+
+	Directed vs. Undirected: Bayesian networks are directed acyclic graphs (DAGs) that represent a set of variables and their conditional dependencies using arrows. Markov networks, on the other hand, are undirected graphs that represent the joint probability distribution of a set of variables using a graph without arrows.
+
+	Causality vs. Association: Bayesian networks represent the causal relationships among variables, whereas Markov networks represent the association between variables. In a Bayesian network, the arrows indicate the causal direction of the relationship between the variables, while in a Markov network, the edges indicate the degree of similarity or interaction between the variables.
+
+	Conditional Probability vs. Energy Function: Bayesian networks use conditional probability distributions to specify the relationships among variables, while Markov networks use an energy function that assigns a score to each configuration of the variables.
+
+	Independence assumptions: Bayesian networks represent conditional independence relationships among variables using the concept of d-separation, while Markov networks represent the independence relationships using the concept of pairwise Markov properties.
+
+PGM - (Idk about Markov one) These networks have a kind of Markovian property  -> they only depend on the immediate connections.
+The previous information become no longer informative.
+This assertion just means that information that we may obtain from X, we have already obtained by knowing the immediate dependency.
+
+The other prespective - graph defines a skeleton for compactly representing a high dimensional distribution, rather than encode the probability of every possible assignment to all of the variables in our domain, we can break up the distribution into smaller factors each over a smaller space of possibilities.
+We can then define the overall joint distribution as a product of these factors
+
+Page 5 - Did not understand the example of 3+4+4+4+2 = 17 nonredundant parameters
+
+It turns out that these two perspectives -- 
+	the graph as a representation of a set of independencies 
+	and 
+	the graph as a skeleton for factorizing a distribution -- are in a deep sense --> EQUIVALENT.
+
+	The independece properties of the distribution are precisely what allow it to be represented compactly in a factorized form.
+
+	Conversely, a particular factorization of the distribution garuntees that certain independencies hold.
+
+Two families of graphical representations of distributions
+	Bayesian Networks
+		Directed Graph - where there is source and target
+
+	Markov Networks
+		Undirected graph
+		It can too be viewed as defining a set of independence assertions or as encoding a compact factorization of the distribution .
+
+Both representations provide the duality of independencies and factorization,
+	but they differ in the set of independencies they can encode and in the factorization of the distribution that they induce.
+
+1.2.2 Representation, Inference, Learning
+	Property used in graphical learning --> 
+
+
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,472 @@
+The challenge of fitting training data differs from the challenge of finding patterns that generalize to new data
+
+ML is a form of applied statistics
+
+Two central approaches to statistics:-
+	Frequentist estimators
+	Bayesian inference
+
+A computer program is said to learn from experience E with respect to some class of tasks T and performance measure P, --- if its performance at tasks in T, as measured by P, improves with experience E.
+
+Classification with missing inputs
+	Rather than providing a single classification function, the learning algorithm must learn a set of functions.
+
+	Each function corresponds to classifying "x" with a different subset of its inputs missing.
+
+	One way to efficiently define such a large set of functions is to learn a probability distribution over all the relevant variables, then solve the classification task by margninalizing out the missing variables.
+	--> with n inputs variables, there are 2^n possible set of missing inputs --> but the computer needs to learn only a single function describing the joint probability distribution --> See Goodfellow et al. (2013b)
+
+Transcription
+	Observe a relatively unstructured representation of some kind of data and transcribe the information into discrete textual form.
+
+	Text recognition
+	Speech recognition
+
+Strucutured output
+	These kind of tasks involve any task where the output vector(or other data structure with multiple values) with important relationships between the different elements
+
+Synthesis and Sampling
+	Machine learning algorithm is asked to generate new examples that are similar to those in the training data.
+
+Inputation of missing values
+	Algorithm must provide a prediction of missing values.
+
+Denoising
+	ML algorithm is given in input a corrupted example obtained by an unknown corruption process from a clean example.
+
+	The leanrer must predict the clean example from its corrupted version or more generally predict the conditional probability distribution.
+
+Density estimation or probability mass function estimation
+	If we have performed Density estimation to obtain probability distribution p(x), we can use that distribution to solve the missing value imputation task
+
+PERFORMANCE MEASURE
+	Accuracy <-> Error rate
+	Error rate === expected 0-1 loss
+
+	For some tasks, it does not make sense to measure accuracy, error rate or any other kind of 0-1 loss.
+	Instead we must use a different performance metric that gives the model a continuous-valued score for each example. --> most commonly --> "average log-probability"
+
+	It is often difficult to choose a performance measure that corresponds well to the desired behaviour of the system.
+
+	maybe, Difficult to decide what to measure
+
+	In some cases we use approximation
+
+EXPERIENCE
+	Supervised and un-supervised classification --> is based on experience
+
+	Un-supervised learning algorithms:-
+		Learn useful properties of the structure of the dataset 
+		** We want to learn the entire probability distribution that generated a dataset **
+
+		Explicitly --> density estimation
+		Implicitly --> Synthesis or Denoising
+
+		Clustering
+
+	Supervised learning algorithms:-
+		experience --> dataset containing features + associated label/target
+
+	Un-supervised learning --> probability distribution
+	Supervised learning --> p(y|x)
+
+	These two types of learning are not formally defined terms.
+
+	Chain rule of probability --> this decomposition means that we can solve the ostensibly unsupervised problem of modeling p("x") by splitting into n supervised learning problems.
+
+	Chain rule of probability --> Alternatively, we can solve the supervised learning problem of learning  p(y|"x") by using traditional unsupervised learning technologies to learn the joint distribution p("x",y)
+
+Supervised learning
+	Regression
+	Classification
+	Strucutured output problems
+
+Un-supervised learning
+	Density estimation in support of other tasks
+
+Multi-instance learning
+	An entire collection of examples is labeled as containing or not containing an example of a class.
+
+	But the individual members of the collection are not labeled.
+
+Reinforcement learning
+	Feedback loop between the learning system and experience
+
+	https://arxiv.org/abs/1312.5602
+
+DESIGN MATRIX
+	Describing a dataset
+
+LINEAR REGRESSION
+	Linear function, Affine function
+
+	"b" bias term is different from the idea of statistical bias, in which a statistical estimation algorithm's expected estimate of a quantity is not equal to the true quantity.
+
+
+CAPACITY, OVERFITTING AND UNDERFITTING
+	Generalization
+		What separates "Machine Learning" from "Optimization" --> Generalization
+
+	How can we affect performance on the test set when we can observe only the training set?
+		The field of "statistical learning theory"
+
+		If test and train are collected arbitrarily --> then there is only little that we can do.
+
+		If we are allowed to make some assumptions about how the training and test set are collected, we can make some progess.
+
+		The training and test data generated by a probability distribution over data sets called the "data-generating process".
+
+		Set of assumptions collectively called --> i.i.d. assumptions
+			Assumption that --> The examples in each dataset are 'independent' from each other.
+								Training set and Test set are identically distributed. --> drawn from the same probability distribution.
+
+			This underlying distribution --> is called "data-generating distribution" p{subscript/data}
+
+		Probabilistic framework and i.i.d. assumptions --> enables us to mathematically study the relationship between training and testing error
+
+		Training error must be almost equal to the testing error as we are choosing the same probability distribution.
+
+	Factors determining how well a machine learning algorithm will perform are its ability to:-
+		1. Make the training error small
+		2. Make the gap between training and testing error small.
+
+	Underfitting
+		Model not able to obtain sufficiently low error value on the training set.
+
+	Overfitting
+		The gap between the training error and test error is too large.
+
+	We can control whether a model overfits or underfits by altering --> "capacity"
+		A model's capacity is its ability to fit a wide variety of functions.
+
+	One way to control the capacity of a learning algorithm is by choosing its "hypothesis space" --> the set of functions that the learning algorithm is allowed to select as being the solution.
+
+	Though model implements a quadratic function of its input, the output is still a linear function of the parameters. --> we can still train the model in closed form.
+
+	Capacity is not determined only by the choice of the model.	
+		The model specifies which family of functions the learning algorithm can choose from when varying the parameters in order to reduce a training objective. --> This is called the "representational capacity" of the model.
+
+	Additional limitations:-	
+		Imperfection of the optimization algorithm --> learning algorithm's "effective capacity" may be less than the representational capacity of the model family.
+
+	Ideas of improving generalization
+		Principle of parsimony --> Occam's razor
+			This principle states that among competing hypotheses that explain known observations equally well, we should choose the simplest one. --> this was formalized and made more precise in the 20th century by the founders of statistical learning theory
+
+	Statistical learning theory --> provides various means of quantifying model capacity
+		Among these, Vapnik-Chervonenkis dimension
+					 VC dimension --> measures the capacity of a binary classifier.
+					 VC dimension --> defined as being the largest possible value of m for which there exists a training set of m different x points that the classifier can arbitrarily label.
+
+	The most important results in statistical learning theory --> the discrepancy between training and generalization error is bounded from above by a quantity that grows as the model capacity grows but shrinks as the number of training examples increases.
+
+	The problem of determining the capacity of a deep learning model is especially difficult because the effective capacity is limited by the capabilites of the optimization algorithm, and we have little theoretical understanding of the general nonconvex optimization problems involved in deep learning.
+
+	To reach the extreme case of arbitrarily high capacity, we introduce the concept of nonparametric models.
+		Cannot be implemented in practice.
+		Searches over all possible probability distributions.
+
+	Practical nonparametric models --> making their complexity a function of the training set size
+		For example --> nearest neighbour regression
+
+	We can create a nonparametric learning algorithm by wrapping a parametric learning algorithm inside another algorithm that increases the number of parameters as needed.
+
+	The error incurred by an oracle making predictions from the true distribution p("x",y) is called the "Bayes error"
+
+	Generalization error always decreases with the number of training examples incrase.	
+		For nonparametric models --> more data = more accuracy until best possible accuracy is achieved.
+
+	It is possible for the model to have optimal capacity and yet have a large gap between training and generalization errors.
+
+	NO FREE LUNCH THEOREM
+		states that ==> averaged over all data-generating distributions, every classification algorithm has ghe same error rate when classifying previously unobserved points.
+
+		No MLA is universally any better than any other.
+
+		The most sophisticated algorithm we can conceive of has the same average performance as merely predicting that every point belongs to the same class.
+
+	The test error at optimal capacity asymptotes to the Bayes error.
+
+	As the training set size increases, the optimal capacity increases. The optimal capacity plateaus after reaching sufficient complexity to solve the task. 
+
+	REGULARIZATION
+		We can control the performance of our algorithms by choosing what kind of functions we allow them to draw solutions from, as well as by controlling the amount of these functions.
+
+		"Weight decay" --> preference of smaller weights
+			See notes for formula of J(w) --> cost function I guess.
+
+			Minimizing J(w) --> choice of weights that make a tradeoff between fitting the training data and parameters being small.
+
+			Smaller slope.
+
+		Regularize a model that learns a function f(x;theta) by addding a penalty factor called "regularizer" to the cost function. 
+			In case of weight decay --> the regularizer is ==> {w transpose} * {w}
+
+		Weight decay encouraged it to use a simpler function described by smaller coefficients.
+
+		Think of excluding a function from a hypothesisspace as expressing an infinitely strong preference against that function.
+
+		There are other ways of expressing our preference over some functions, both implicitly and explicitly. Together these appproaches are known as "regularization".
+
+		"Regularization" is any modification we make to a learning algorithm that is intended to reduce the generalization error but not its training error.
+
+		Regularization is one of the central concerns of the field of machine learning, rivaled in its importance only by optimization.
+
+		The free lunch theorem --> there is no best form of regularization.
+			We must choose according to the task.
+
+		The philosophy of deep learning in general and this book in particular is that a wide range of tasks may all be solved effectively using very general-purpose forms of regularization.
+
+HYPERPARAMETERS and VALIDATION SETS
+	Hyperparameters --> settings that we can use to control the algorithm's behaviour.
+
+	These values are not adapted by the learning algorithm itself (though we can design a nested learning proceudure in which one learning algorithm learns the best hyperparameters for another learning algorithm)
+
+	In polymomial regression --> single hyperparameter --> degree of the polymomial --> capacity hyperparameter
+		Lambda parameter --> used for regularization --> is also a hyperparameter
+
+	Hyperparameter --> setting to difficult to optimize
+		Not appropriate to learn that hyperparameter on the training set.
+		This applies to all hyperparameters that control model capacity.
+
+		If learned on the training set, hyperparameters would always choose the maximum possible model capacity, resulting in overfitting
+
+	To solve this problem, we need a "validation set" of examples that the training algorithm does not observe.
+	It is important that the test examples are not used in any way to make choices about the model, including its hyperparameters.
+
+	One subset to learn the parameters.
+	Other used to  estimate the generalization error
+
+	Using the same test set also is kinda bad.
+
+	CROSS-VALIDATION
+		Dividing the dataset into fixed training and fixed test set can be problematic if it results in test set being small.
+
+		Small set --> statistical uncertainty 
+
+		Differently chosen subsets.
+
+		Most common --> k-fold cross-validation procedure
+			k non-overlapping subsets
+
+			Test error --> average test error across k trials
+
+			One problem is that no unbiased estimators of the variance of such average error estimators exist, but approximately are typically used.
+
+			This algorithm is given in book --> page 120
+
+ESTIMATORS, BIAS and VARIANCE
+	statistics --> many tools
+
+	POINT ESTIMATION
+		Defined on i.i.d data points
+		Its an estimation, look notes
+		Great flexibility
+
+		Frequentist perspective on statistics
+			That is, we assume that the true parameter value {theta} is fixed but unknown, while "point estimate" is a function of the data.
+
+			"point estimate" is a random variable.
+
+		Point estimation --> can also refer to the estimation of the relationship between input and target variables
+
+		Function Estimation
+			Function estimator f_cap is a point estimator in function space
+
+	BIAS
+		See notes for finding bias in estimators.
+		Unbiased are desirable, they are not always the best estimators.
+
+	VARIANCE and STANDARD ERROR
+		Variance --> property of estimator --> how much we expect it to vary as a function of the data sample.
+
+		Just as we computed the --> Expectation of the estimator to determine its bias, we compute its variance.
+
+		Variance --> measure of how we would expect the estimate we compute from data to vary as we independently resample the dataset from the underlying data-generating process.
+
+		Standard error --> often estimated by using an estimate of {sigma}
+
+		Neither "square root of the sample variance" nor "the square root of the unbiased estimator of variance" --> is an unbiased estimate of the STANDARD DEVIATION --> but still are used in practice.
+
+		The square root of the unbiased estimator of the variance is less of an underestimate --> for large m the approximation is quite reasonable.
+
+		The number of examples in the test set determines the accuracy of this estimate
+
+		It is common to say that algorithm A is better than algorithm b, 	
+			if the upper bound of the 95 percent confidence interval for the error of algorithm A is less than the lower bound of the 95 percent confidence interval for the error of algorithm B.
+
+		The variance of estimator decreases with m --> common property of estimators.
+
+	TRADING OFF BIAS AND VARIANCE to MINIMIZE Mean Squared Error
+		Bias --> measures the expected deviation from the true value of the function or parameter
+		Variance --> measure of deviation from the expected estimator value that any particular sampling of the data is likely to cause.
+
+		Most common way --> trade-off --> use cross-validation
+
+		Alternatively --> MSE = (Bias ^ 2) + Variance
+				MSE --> overall expected deviation - in a squared error sense between the estimator and the true value of the parameter theta
+
+		Increasing capacity --> increase in variance, decrease in bias
+			U shaped --> Generalized error
+
+	CONSISTENCY
+		Concerned with the behaviour of an estimator as the amount of training data grows.
+			We wish our point estimates converge to the true value as examples increases.
+
+		Consistency ensures that the bias induced by the estimator diminishes as the number of data samples increases.
+		Reverse not true --> asymptotic unbiasedness does not imply consistence.
+
+MAXIMUM LIKELIHOOD ESTIMATION
+	Refer notes
+
+	Minimizing the KL divergence == cross entropy between the distributions.
+	Mean squared error is the cross-entropy between the empirical distribution and a Gaussian model
+
+	Maximum Likelihood is an attempt to make the model distribution match the empirical distribution.
+	Ideally want to match it to true data-generating distribution but it is not available.
+
+	Maximum Likelihood --> becomes the minimization of negative--log-likelihood (NLL) or equivalently, minimization of cross-entropy.
+
+	KL divergence becomes usesful because it has a known minimum value of 0.
+	But NLL can become negative as the domain is real numbers.
+
+	Formula 5.65 last term --> DOUBT
+
+	PROPERTIES OF MAXIMUM LIKELIHOOD
+		Under appropriate conditions, the maximum Likelihood estimator has the property of consistency --> as m tends to infinity, the MLE of a parameter converges to the true value of the parameter\
+			1. The true distribution must like within the model family p{model}(.;theta).
+				Otherwise, no estimator can recover p{data}.
+			2. The true distribution must correspond to exactly one value of theta.
+				Otherwise, MLE can recover the correct p{data}, but will not be able to determine which value of theta was used by the data-generating process
+
+		Statistical efficiency
+
+		The Cramer-Rao lower bound shows that no consistent estimator has a lower MSE than the maximum Likelihood estimator.
+
+		When m is small we use regularization strategies like weight decay to obtain biased version MLE that has less variance when training data is limited.
+
+BAYESIAN STATISTICS
+	Bayesian estimation offers two important differences:-
+		1. The Bayesian --> make predictions using a full distribution over theta.
+			MLE --> predictions using point estimate of theta.
+
+			Frequentists use variance to see the uncertainty in a given point estimate of theta.
+			The variance of the estimator is an assessment of how the estimate might change with alternative samplings of observed data.
+
+			The Bayesian answer --> how to deal with uncertainty in the estimator --> simply integrate over it.
+				This protects well from overfitting.
+
+			Frequentists approach --> for constructing an estimator is based on the rather ad hoc decision to summarize all knowledge contained in the dataset with a single point estimate.
+
+		2. Contribution of Bayesian prior
+			Prior has an influence by shifting probability mass density towards regions of the parameter space that are preferred apriori.
+
+			In practice, a priori --> expressed a prefernce for models that are simpler or more smooth
+
+			Critics of Bayesian approach identify the prior as a source of subjective human judgement affecting the predictions.
+
+		Bayesian methods generalize much better whe limited data is available, but typically suffer from high computational cost when the number of training examples is large.
+
+	Maximum A Posteriori (MAP) Estimation
+
+SUPERVISED LEARNING ALGORITHMS
+	Probabilistic Supervised Learning
+		p(y|x)
+
+		Maximum likelihood estimation to find the best parameter vector theta for a parametric family of distributions p(y|x;theta)
+
+		Linear regression corresponds to the family --> varies N(y;theta transpose * x, I)
+
+		Logistic regression
+			p(y=1|x;theta) = sigmoid(theta transpose * x)
+
+		The same strategy is applied to essentially any supervised learning problem by writing down a parametric family of conditional probability distributions over the right kind of input and output variables.
+
+	SUPPORT VECTOR MACHINES
+		w transpose x + b --> positive --> positive class
+		w transpose x + b --> negative --> negative class
+
+		KERNEL TRICK	
+			Observation that machine learning algorithms can be written in terms of dot product between examples.
+			See notes
+
+			In some cases, Kernel function can be non-linear tractable function of x, even when phi(x) is intractiable.
+
+			Gaussian Kernel / Radial Basis Function
+				See notes
+				Its value decreases along lines in "v" space radiating outward from u.
+
+				Gaussian Kernel --> dot product in an infinite dimensional space, but the derivation of the space is less straightforward than in our example of the min kernel over the integers.
+
+				Gaussian Kernel --> performs "template matching"
+					When x' is near x, the Gaussian kernel has a large response
+
+			There are many other algorithms that are enhanced by the kernel trick. Many other linear models can be enhanced in this way. --> the category of algorithms that employ the kernel trick --> Kernel Machines/ Kernel Methods
+
+			Major drawback --> cost of evaluating the decision function is linear in the number of training examples
+
+			There is something called --> "support vectors" --> EXPLORE.
+
+		Kernel methods --> high computational cost when number of samples is large
+
+	OTHER SIMPLE SUPERVISED LEARNING ALGORITHMS
+		k-nearest neighbours
+
+		Decision Tree
+			Trained with specialized algorithms
+
+			The learning algorithm is non-parametric if -->  it is allowed to learn a tree of arbitrary size
+				usually regularized with size constraints
+
+	God-Tier books in Machine Learning
+		Murphy(2012)
+		Bishop(2006)
+		Hastie(2001)
+
+UNSUPERVISED LEARNING ALGORITHMS
+	Find the best representation of the data
+
+	Simpler representations examples:-
+		Lower-dimensional representations
+		Sparse representations
+		Independent representations
+
+	Independent representations
+		attempt to disentangle the sources of variation underlying the data distribution such that the dimensions of the representation are statistically independent.
+
+	The notion of representation is one the central themes of deep learning.
+
+	PRINCIPLE COMPONENTS ANALYSIS
+		First step towards the criterion of learning representation whose elements are statistically independent.
+		To achieve full independence, a representation learning algorithm must also remove the nonlinear relationships between variables.
+
+		PCA --> learns an orthogonal, linear transformation of data that projects input x to a representation z.
+
+		We can use PCA --> as a simple and effective dimensionality reduction method --> that preservesas much information as possible in the datas
+
+		The ability of PCA to transform data into a representation where the elements are mutually uncorrelated is a very important property.
+
+		Attempts to disentangle the unknown factors of variation underlying the data.
+
+		In the case of PCA, the disentangling takes the form of finding a rotation of the input space that aligns the principal axes of variance with the basis of the new representation space associated with z.
+
+	We are also interested in disentangling more complicated forms of feature dependencies.
+
+	k-Means Clustering Algorithm
+		Example of sparse representation
+
+		One-hot --> is extreme case of sparse representation
+
+		k-means algorithm
+			k difference centroids
+			Each training example is assigned a cluster of the nearest centroid.
+			Centroid is updated to the mean of assigned cluster examples
+			repeat the last two lines
+
+		We may hope to find clustering that relates to one feature but obtain a different, equally valid clustering that is not relevant to the task.
+			Hence it is better to prefer distributed representation instead of one-hot.
+
+		It is still not clear what the optimal distributed representation is, but having many attributes reduces the burden on the algorithm to guess which single attribute we care about, and gives us the ability to measure similarity between objects in a fine-grained way by comparing many attributes instead of testing whether one attribute matches.
+
+STOCHASTIC GRADIENT DESCENT
+	

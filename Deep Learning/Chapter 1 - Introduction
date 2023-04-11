@@ -1,0 +1,263 @@
+Easy to perform, but hard to describe
+
+Hierarchy of concepts --> enables the computer --> to learn complicated concepts by buildinf them out of simpler ones.
+
+FAMOUS PROJECTS
+	Cyc --> infererence engine and database of statements in a language called CycL
+
+"naive Bayes" algorithm --> separate legitimate e-mail from spam e-mail.
+
+Performance of simple machine learning algorithms depends HEAVILY on the "representation" of data
+	If we just give MRI scan it would be hard to predict cesarean delivery logistic regression
+
+	Humans find it much easier to do arithmetic in arabic than in roman representation
+
+	Data points might be easier to separate if they were represented in polar coordinates rather than cartesian coordinates
+
+	Many AI tasks can be solved by designing the right set of features to extract for that task.
+		Example :- Useful feature for speech identification --> estimate of the size of the speaker's vocal tract --> this clue helps in distinguishing between man, woman and child
+
+	For many tasks, it is difficult to know what features should be extracted
+
+	Solution to the above problem --> REPRESENTATION LEARNING
+		Use machine learning to discover not only the mapping from representation to output, but also the representation itself.
+
+		Learned representations >>> Hand-designed representations
+
+		Rapidly adapt to new tasks, minimal human intervention
+
+		A representation learning algorithm can discover a good set of features for:-
+			Simple task  --> minutes
+			Complex task --> hours to months
+
+		Quintessential example of representation learning algorithm is the "autoencoder"
+
+		AUTOENCODER
+			Combination of an "encoder" function, which converts the input data into a different representation and a "decoder" function which converts the new representation back into its original format.
+
+			Autoencoders are trained to preserve as much information as possible and also trained to make the new representation have various nice properties.
+
+			Different kind of autoencoders aim to achieve differnt properties.
+
+GOAL of designing features or algorithms for learning features
+	"Separate the factors of variation" that explain the above data
+
+	The factors of variation for speech recording --> speaker's age, sex, accent, words that they are speaking
+
+	These factors of variation influence every single piece of data we are able to observe
+		Red car might  be close to black at night
+		Shape of car depends on viewing angle
+
+	 --> Hence most applications require us to "disentangle" the factors of variation and discard the ones we don't care about
+
+	 When it is nearly as difficult to obtain a representation as to solve the original problem, representation learning does not seem to help us (at first glance)
+
+DEEP LEARNING
+	Solves the central problem in representation learning by introducing representations expressed in terms of other (other simple representations).
+
+	Build complex from simpler concepts
+
+	Quintessential example of deep learning --> FeedForward Deep Network / Multilayer Perceptron
+
+		Depth enables the computer to learn a multistep computer program.	
+		Each layer of representation --> state of computer memory after executing another set of instructions in parallel
+
+	Two ways of measuring the depth of a model:-
+		1. Number of sequential instructions that must be executed to evaluate the architecture.
+
+		2. Depth of graph describing how concepts are related to each other
+			{Commonly used by deep probabilistic models}
+
+DEEP LEARNING --> The study of models that involve a greater amount of composition of either learned functions or learned concepts than traditional machine learning does.
+
+	Type of machine learning
+
+	Improve with experience and data
+
+	Power and flexibility --> by representing the world as nested hierarchy of concepts {built from simpler concepts}
+
+		More abstract representations computed in terms of less abstract ones.
+		
+Venn diagram {inside-out representations}
+	Deep Learning <> Representation learning <> Machine learning <> AI
+
+Deep learning applications in:-
+	Computer vision
+	Speech and audio processing
+	NLP
+	Robotics
+	Bioinformatics and chemistry
+	Video games
+	Search Engines
+	Online Advertising
+	Finance
+
+Deep Learning was known as 
+	"cybernetics" in 1940s to 1960s
+	"connectionism" in 1980s to 1990s
+	"deep learning" from 2006
+
+Neural perspective on deep learning is motivated by two main ideas:-	
+	1. The brain provides a proof that intelligent behaviour is possible and a conceptually straightforward path to building intelligence is to reverse engineer the computational principles behind the brain and duplicate its functionality.
+
+	2. Deeply interesting to understand the brain, principles of human brain that underlie human intelligence, so machine learning models that shed light on these basic scientific questions are useful apart from their ability to solve engineering applications.
+
+Deep Learning --> general principle of learning --> "multiple levels of composition"	
+	which can be applied in machine learning frameworks that are not necessarily neurally inspired.
+
+McCollouch-Pits neuron --> early model of brain function
+	Linear model --> 2 categories --> positive or negative
+
+ADALINE --> Adaptive Linear Element
+	Stochastic Gradient Descent
+
+Perceptron and ADALINE --> linear models
+	Nowadays they are trained in different ways.
+
+Famous example of what linear models cannot learn --> XOR function
+
+Neuroscience --> important source of inspiration for deep learning researchers, but it no longer a predominant guide for the field
+	Main reason for diminished role of Neuroscience --> we don't have enough information about the brain to use it as a guide
+
+	We would need to monitor the activity of thousands of interconnected neurons simultaneously.
+
+Neuroscience --> reason to hope --> solve many tasks
+	Ferrets --> can learn to see with auditory processing region of their brain if their brains are rewired to send visual signals to that area.
+
+	This suggests --> maybe we use only single algorithm to solve most of the different tasks that the brain solves. 
+
+	It is common for deep learning research groups to study many or even all these application areas simultaneously.
+
+Many computational units --> become intelligent --> via interactions with each other --> is inspired by the brain
+
+Neocognitron --> architecture for processing images
+	model neuron based on "the rectified linear unit"
+
+	We know that actual neurons compute very different functions than modern rectified linear units, but greater neural realism has not yet led to an improvement in machine learning performance
+
+MACHINE LEARNING FIELDS --> that are influenced by brain
+	Kernel machines
+	Bayesian statistics
+
+Modern deep learning --> inspired by
+	Linear algebra
+	Probability
+	Information theory
+	Numerical optimization
+
+Effort to understand brain on an algorithmic level --> "COMPUTATIONAL NEUROSCIENCE" --> separate field from deep learning
+
+Deep Learning --> main task --> how to build computer systems that are able to successfully solve tasks requiring intelligence.
+
+Computational Neuroscience --> Building more accurate models of how the brain actually works.
+
+2nd wave of neural network called --> "connectionsim" or "parallel distributed processing".
+	arose in the context of "Cognitive science"
+
+	Cognitive science --> undestanding the mind
+						  multiple different levels of analysis
+
+	They studied symbolic reasoning
+
+	Symboling models --> hard to explain in terms of how they use neurons
+
+Central idea in "connectionism" --> A large number of simple computational units can achieve intelligent behaviour when networked together.
+
+Several concepts in connectionism:-
+	Distributed representation
+
+Distributed representation
+	Each input --> represented by many features
+	Each feature --> representation of many possible inputs
+
+Long short-term memory (LSTM) network
+	Used in NLP tasks at Google.
+
+Kernel machines and Graphical models
+
+NCAP --? Neural Computation and Adaptive Perception
+
+Why deep learning has only recently become recognized?
+	Amount of skill required "reduces" --> as --> the amount of training data "increases"
+
+	Size of benchmark "dataset"s
+
+Key burden of statistical estimation --> generalizing to new data after observing only a small amount of data
+
+MNIST dataset --> "the drosophila of machine learning"
+	enables machine learning researchers to study their algorithms in controlled laboratory conditions
+
+	much just biologists often study fruit flies.
+
+Rough rule of thumb --> supervised deep learning algorithm --> acceptable 5000 labelled examples per category
+														   --> human level performance 10,000,000 labelled examples
+
+Working successfully with datasets smaller than this is an important research area
+	Focusing on how we can take advantage of large quantities of unlabelled examples, with unsupervised or semi-supervised learning.
+
+INCREASING MODEL SIZES
+	Computational resources
+
+	WE have matched in terms of "number of connections per neuron"
+
+Increasing order of number of connections per neuron
+	1. ADALINE
+	2. Neocognitron
+	3. GPU-accelerated convolutional network
+	4. Deep Boltzmann machine
+	5. Unsupervised convolutional network
+	6. GPU-accelerated multilayer perceptron
+	7. Distributed autoencoder
+	8. Multi-GPU convolutional network
+	9. COTS HPC unsupervised convolutional network
+	10. GoogLeNet
+
+Increasing order of neural network over time
+	1. Perceptron
+	2. ADALINE
+	3. Neocognitron
+	4. Early back-prop network
+	5. Recurrent NN for speech recognition
+	6. Multilayer perceptron for speech recognition
+	7. Mean field sigmoid belief network
+	8. LeNet-5
+	9. Echo state network
+	10. Deep belief network
+	11. GPU-accelerated convolutional network
+	12. Deep Boltzmann machine
+	13. GPU-accelerated deep belief network
+	14. Unsupervised convolutional network
+	15. GPU-accelerated multilayer perceptron
+	16. OMP-1 network
+	17. Distributed encoder
+	18. Multi-GPU convolutional network
+	19. COTS HPC unsupervised convolutional network
+	20. GoogLeNet
+
+Modern networks can recognize at least 1000 different categories of objects.
+
+*ILSVRC* - ImageNet Large Scale Visual Recognition Challenge --> every year
+
+Cconvolutional brought down error rate from 26.1% to 15.3%
+	Now it has come down to 3.6%
+
+Deep Learning --> dramatic impact on speech recognition
+	error rates were cut in HALF
+
+Deep Learning --> Pedestrian detection and image segmentation
+
+Goodfellow et al. --> showed that neural networks could learn to output an entire sequence of characters transcribed from an image, rather than just "one".
+
+Recurrent NN such as LSTM sequence model --> are used to model relationships between sequences and other sequences rather than just fixed inputs.
+	This sequence-to-sequence learning seems to be on the cusp of revolutionizing another application: machine translation.
+
+neural Turing Machines
+	that learn from memory cells and write arbitrary content to memory cells.
+	self-programming technology
+
+DeepMind {reinforcement learning} --> based on deep learning --> capable of learning to play Atari video games
+
+Used to predict how molecules will interact in order to help pharma companies design new drugs
+
+To search for sub-atomic particles
+Automatically parse microscopic immages to construct a 3D map of the human brain

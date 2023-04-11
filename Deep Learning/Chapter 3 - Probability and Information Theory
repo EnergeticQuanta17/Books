@@ -1,0 +1,371 @@
+Probability theory --> mathematical framework for representing uncertain statements.
+	Quantifying uncertainity
+	Axioms deriving new uncertain statements.
+
+In AI, Probability theory is used in two major ways:-
+	1. The laws of probability tell us how AI systems should reason
+	   So we design our algorithms to compute or approximate various expressions dervied using probability theory.
+
+	2. We can use probability and statistics to theoretically analyze the behaviour of proposed AI systems.
+
+Information theory --> enables us to quantify the amount of uncertainity in a probability distribution.
+
+Machine Learning must always deal with uncertain quantities and stochastic (nondeterministic) quantities.
+	Nearly all activities require some ability to reason in the presense of uncertainty.
+
+Three possible sources of uncertainty:-	
+	1. Inherent stochasticity in the system being modeled.
+		Example:- cards that are truly shuffled into a random order.
+
+	2. Incomplete observability	
+		Even deterministic systems can appear stochastic if we cannot observe all the variables that drive the behaviour.
+
+	3. Incomplete modeling
+		When we use a model that must discard some of the information we have observed, the discarded information results in uncertainty in the model's predictions.
+
+In many cases, it is more practical to use a simple but uncertain rule rather than a complex but certain one, even if the true rule is deterministic and our simple rule is "Birds can fly".
+	True rule tells us, in a deterministic way which birds cannot fly
+	But it is expensive to develop, maintain and communicate.
+
+Some probabilities are not repetitive.
+	Can make infinite copies and analyze--> p% of appearance of deck of card means it is the same for different decks also
+	Degree of disbelief --> BUT if a patient has 40% chance of having cancer, that doees not mean other patients also have 40% chance.
+
+	First one is called --> Frequentist probability
+	Second one is called --> Bayesian probability
+
+If we list several properties that we expect uncertainty to have, then the only way to satisfy those properties is to treat Bayesian probabilities as behaving exactly the same as frequentist probabilities.
+	For more details about why a small set of common sense assumptions implies that the same Axioms must control both kinds of probability, see Ramsey (2016).
+
+Probability --> extension of logic to deal with uncertainty.
+Logic --> set of formal rules for determining what propositions are implied to be true or false.
+Probability theory --> set of formal rules for determining the likelihood of a proposition being true given the likelihood of other propositions.
+
+RANDOM VARIABLES
+	A variable that can take on different values randomly.
+
+	A description of the states that are possible; it must be coupled with a probability distribution that specifies how likely each of these states are.
+
+	Discrete random variable --> Finite or countably infinite number of states
+		Not necessarily integers, they can also be named states that are not considered to have any numerical value.
+
+	Continuous random variable --> associated with any real value
+
+PROBABILITY DISTRIBUTIONS
+	Description of how likely a R.V. or a set of R.V.s is to take on each of its possible states.
+
+	DISCRETE VARIABLES AND PROBABILITY MASS FUNCTION
+		Over discrete variables
+
+		denoted by "P"
+
+		Each R.V. is associated with different probability mass function
+			P(x) != P(y)
+
+		Maps from "state of a random variable" --> "probability of that random variable taking on that state"
+
+		Probability mass functions can act on many variables --> joint probability distribution
+
+		Properties of PMF on a random variable x:=
+			1. Domain of P must be the set of all possible states of x.
+			2. 0 <= P(x) <= 1
+			3. Sum of P(x) over all x is 1 --> this property is referred to as --> "normalized"
+
+	CONTINUOUS VARIABLES AND PROBABILITY DENSITY FUNCTION
+		In the properties to be a probability density function, it is not required that p(x)<=1
+		
+		A probability density function p(x) does not give the probability of a specific state directly; 
+			instead the probability of landing inside an infinitesimal region with volume {dou}x is given by        p(x) {dou}x
+
+MARGINAL PROBABILITY
+	the probability distribution over the subset is known as marginal probability distribution.
+
+	The name "marginal probability" comes from the process of computing marginal probabilities on paper.
+		"along the margin do computation" --> HAHAHAHA nice explaination hahahah
+
+CONDITIONAL PROBABILITY
+	We cannot compute this when the other event never happens.
+
+	It is important not to confuse conditional probability with "computing what would happen if some action were undertaken"
+		Computing the consequences of an action is called making an "intervention query"
+		Intervention query are the domain of "casual modeling" (which is not explored in this book)
+
+CHAIN RULE OF CONDITIONAL PROBABILITY
+	Any joint probability distribution over many random variables may be decomposed into conditional distributions over only one variable
+
+	See notes for formula
+
+INDEPENDENCE AND CONDITIONAL INDEPENDENCE
+
+	Independent --> product of two factors
+		p(X,Y) = p(X) * p(Y)
+
+	Conditionally independent --> if the conditional probability distribution over x and y factorizes for every value of z
+		p(X,Y|Z) = p(X|Z) * p(Y|Z)
+
+EXPECTATION, VARIANCE AND COVARIANCE
+	Expectation --> of some function f(x) with respect to a probability distribution P(x) --> 
+		average
+		mean
+		that f takes on when x is drawn from P.
+
+		Expectations are linear
+		
+	Variance --> measure of how much the values of a function of a random variable x vary as we sample different values of x from its probability distributions
+		Variance --> low --> the values of f(x) cluster near their expected value
+
+	The sqrt of the variance is known as the "standard deviation"
+
+	Covariance --> measures how much two values are linearly related to each other, as well as the scale of these variables
+		High abs values of covariance --> the values change very much and are both far from their respective means at the same time.
+			If the sign of the covariance is positive --> then both the variables tend to take relatively high values simultaneously
+
+			If the sign of the covariance is negative --> then one variable tends to take relatively high and other takes relatively low values
+
+	Other measures such as "correlation" normalize the contribution of each variable in order to mesaure only how much the variables are related, rather than also being affected by the scale of the separate variables.
+
+	The notions of "covariance" and "dependence" are related but distinct concepts.
+		Related ==> independent variables have zero covariance
+					dependent variables have non-zero covariance
+
+		Independence ==> 
+			zero covariance --> no linear dependence between them
+
+			Independence is stronger requirement than zero covariance because indepence also excludes nonlinear relationships
+
+		It is possible for two variables to be dependent but have zero covariance.
+
+COMMON PROBABILITY DISTRIBUTIONS
+	BERNOULLI DISTRIBUTION
+		distribution over a single binary random variable
+
+	MUTLINOULLI DISTRIBUTION
+		Also known as "categorical distribution"
+		over discrete variable with k states, where k is finite
+
+		there is some reason they don't compute the expectation or variance of multinoulli-distribution random variables.
+
+	GAUSSIAN DISTRIBUTION
+		Also known as "normal distribution"
+
+		Good default for two reasons:-	
+			1. The "central limit theorem" --> shows that the sum of many independent random variables is approximately normal distributed.
+			 	complicated systems modeled as --> normally distributed noise
+
+			2. Normal distribution encodes the maximum amount of uncertainty over the real numbers.
+
+			Normal distribution as being the one that inserts the least amount of prior knowledge into a model. Fully developing and justifying the idea requires more mathematical tools and is postponed to section 19.4.2
+
+		The normal distribution generalizes to {real}^n --> in that case it is known as --> multivariate normal distribution
+
+		Multivariate normal distribution
+			Precision matrix {beta}
+
+			We often fix the covariance matrix to be a diagonal matrix.
+			An even simpler version is the "isotropic" Gaussian distribution --> whose covariance matrix is a scalar times the identity matrix.
+
+	EXPONENTIAL and LAPLACE DISTRIBUTIONS
+		In the context of deep learning, we often want to have a probability distribution with a sharp point at x=0
+
+		To accomplish this --> we can use the "exponential distribution"
+
+		A closely related probability distribution --> allows us to place a sharp peak of probability mass at an arbitraru point {mu} is the Laplace distribution
+
+	THE DIRAC DISTRIBUTION AND EMPIRICAL DISTRIBUTION
+		In some cases, we wish to specify that all the mass in a probability distribution clusters around a single point.
+
+		We can accomplish this using the "dirac delta function"
+
+		p(x) := delta(x - {mu})
+
+		Dirac function is defined such that it is zero valued everywhere except 0, yet integrates to 1.
+
+		It is not an ordinary function that associates each value x with a real valued outputl instead it is a different kind of mathematical object called a "generalized function" that is defined in terms of its properties while integrated.
+
+		We can think of the function as being the limit point of a series of functions that put less and less mass on all points than zero --> WHAT DOES THIS MEAN?
+
+		A common use of dirac delta distribution is --> empirical distribution
+			The dirac delta distribution is only necessary to define the empirical distribution over continuous variables.
+
+			For discrete variables --> empirical distribution can be conceptualized as a multinoulli-distribution with a probability associated with each possible input value that is simply equal to the empirical frequency of that value in that training set.
+
+		We can view empirical distribution formed from a dataset of training examples as specifying the distribution that we sample from when we train a model on this dataset.
+
+		Important perspective on the empirical distribution --> the probability density that maximizes the likelihood of the training data (see section 5.5).
+
+	MIXTURES OF DISTRIBUTIONS
+		Combining other simpler probability distributions --> construct --> "mixture distribution" --> several component distributions
+
+		On each trial, the choice of which component distribution should generate the sample is determined by sampling a component identity from a multinoulli-distribution
+
+		the empirical distribution over real valued variables is a mixture distribution: with one Dirac component for each training example.
+
+		Goal of mixture distribution is to create a richer distribution.
+
+		"The latent variable" --> is a random variable that we cannot observe directly.
+			The component identity variable c of the mixture model provides an example.
+			Latent variable may be related to x through the joint distribution.
+			This is discussed at much depth in Chapter 16. So don't worry too much about not understanding
+
+		Gaussian mixture
+			components are Gaussians
+			Each component has a separately parameterized mean {mu} and covariance {sigma}.
+			Some mixtures can have more constraints
+				--> if that is the case, then the mixture of Gaussians might constrain the covariance matrix for each component to be diagonal or isotropic
+			The parameters of a Gaussian mixture specify the "prior probability" given to each component. 
+			The word prior indicates that it expresses the model's beliefs about c before it has observed x.
+			By comparison, P(c|x) is a posterior probability, because it is computed after observation of x.
+			A Gaussian mixture model is a universal approximator of densities, in the sense that any smooth density can be approximated with any specific nonzero amount of error by a Gaussian mixture model with enough components.
+
+
+USEFUL PROPERTIES OF COMMON FUNCTIONS
+	Logistic sigmoid --> the one I know
+		is commonly used to produce the {phi} parameter of a BERNOULLI distribution because its range is (0,1)
+		Saturates for very positive or very negative
+
+	Softplus function
+		zeta(s) := log(1+exp(x))
+		The Softplus function is useful for producing the {beta} or {sigma} parameter of a normal distribution because the range is (0,inf).
+
+		It also arises commonly when manipulating expressions involving sigmoids.
+
+		The name of the functions --> it is smoothed or softened version of 
+			x <superscipt>+</superscript> = max(0,x)
+
+
+	sigma inverse function is called "logit" in statistics
+
+BAYE'S RULE
+	If we know P(y|x) but we need to find P(x|y) then we apply Baye's rule
+
+	P(x|y) * P(y) = P(y|x) * P(x)
+
+TECHNICAL DETAILS OF CONTINUOUS VARIABLES
+	A proper and formal understanding of continuous random variables and probability density functions require developing probability theory in terms of a branch of mathematics known as --> "measure theory".
+
+	PARADOX --> It is possible to construct two sets S1 and S2 such that P(x belongs to S1) + P(x belongs to S2) is greater than 1 but {S1 and S2 are disjoint}
+		These sets are generally constructed making very heavy use of the infinite precision of real numbers.
+			The "Banach-Tarski theorem" provides a fun example of such sets.
+
+	One of the key contributions of "measure theory" --> provides a characterization of the set of sets we can compute the probability of without encountering paradoxes.
+
+	measure theory is out of scope for this book.
+
+	In this book, measure theory --> useful for describing theorems that apply to most points in {R}^n but do not apply to some corner cases.
+		rigorous way of describing that a set of points is negligibly small --> such a set is said to have "measure zero"
+
+		Any union of countably many sets that each have measure zero also has measure zero
+
+	Another useful term from measure theory is --> "almost everywhere"
+		everywhere except for on a set of measure zero
+		the exceptions are ignored --> as they are small
+
+	Some important results in probability theory --> hold for all discrete values but
+												 --> but hold "almost everywhere" for continuous values
+
+	if y=g(x) where g is invertible, it is not always true that p(y) under y = p(g inverse of y) under x
+		The problem with this approach is that it fails to account for the distortion of space introduced by the function g
+
+
+------------------------------------------------------------------------------------------------------
+										INFORMATION THEORY
+------------------------------------------------------------------------------------------------------
+
+Branch of Applied Mathematics
+Quantifying how much information is present in a signal.
+
+In the context sending messages --> information theory --> how to design optimal codes and calculate the expected length of messages sampled from specific probability distributions using various encoding schemes.
+
+In the context of Machine learning:-
+	Apply to continuous variables where some of the length interpretations do not apply.
+
+	In this book --> to characterize probability distributions or to quantify similarity between probability distributions.
+
+Basic intuition behind information theory --> learning that an unlikely event has occured is more informative than learning that a likely event has occured.
+	
+
+	Likely event --> less information content
+	Less likely event  --> higher information content
+
+	Independent events should have additive information.
+
+SELF INFORMATION
+	I(x) =  - log{P(x)}
+
+	base --> e
+	units --> nat
+
+	One nat is the amount of information gained by observing an event of probability 1/e.
+
+	base-2 --> is called measured in bits or shannons.
+
+	Information measured in bits is just a rescaling of information measured in nats.
+
+When x is continuous, same definition, but some of the properties from the discrete case are lost.
+	An event with unit density still has zero information, despite not being an event that is garunteed to occue. ---> WHAAAAAAAAAAAAAAT?????????????
+
+Self-information deals with a single outcome.
+
+For entire probability distribution we use --> Shannon entropy
+	H(x) = E[I(x)] under x obeying probability distribution P
+	H(x) = - E[log P(x)] under x obeying probability distribution P
+
+	expected amount of information in an event drawn from that observation.
+
+	Provides a lower bound on the number of bits needed on average to encode symbols drawn from a distribution P.
+
+	Distributions that are nearly deterministic have low entropy.
+
+	When x is continuous, the Shannon entropy is known as the "differential entropy".
+
+If we have two separate probability distributions P(x) and Q(x) over the same random variable x, we can measure how different these two distributions are, using the Kullback-Leibler (KL) divergence
+
+	Properties of KL divergence:-
+		It is 0 iff P and Q are the same distribution in the case of discrete variables, or "almost everywhere" in the case of continuous variables.
+
+		Because KL divergence is non-negative and measures the difference between two distributions, it is often conceptualized as measuring some sort of distance between two distributions.
+			It is not true distance because it is not symmetric
+			This assymmetricity means that there are important consequences to the choice of whether we use D(P || Q) or D(Q || P)
+
+		KL divergence is asymmetric
+
+Cross-entropy H(P,Q) = H(P) + D(P || Q)
+	H(P,Q) = - Expectation{log(Q(x))} when x varies with P
+	Minimizing Cross-entropy wrt to Q === Minimizing the KL divergence
+		because Q does not participate in the omitted term.
+
+	0 log(0) --> notate using tending --> lim x -> 0  on x log(x) = 0
+
+
+STRUCTURED PROBABILITISTIC MODELS
+	Machine learning algorithms often involve probability distributions over a large number of random variables.
+
+	Probability distributions involve direct interactions between relatively few variables.
+		Hence it is inefficient to describe an entire joint probability distributions (both computationally and statistically)
+
+	a influences b
+	b influences c
+	a and c are independent given b
+	THEN --> p(a,b,c) = p(a) * p(b|a) * p(c|b)
+
+		Each factor uses a number of parameters that is exponential in the number of variables in the factor.
+		This means we can greatly reduce the number of factors representing the distribution.
+
+	We can describe these kind of factorizations using graphs --> called --> "STRUCTURED PROBABILITISTIC MODEL"
+	or "GRAPHICAL MODEL"
+
+	Two kinds of structured probabilistic models:-
+		1. Directed models --> factorizations into conditional probability distributions
+		2. Undirected models --> represent factorizations into a set of functions
+			Each clique in an undirected model is associated with a factor phi(that clique).
+			These factors are just functions, not probability distributions.
+			The output of each factor must be non-negative, but there is no constraint that the factor must sum or integrate to 1 like probability distribution.
+
+		The probability of a configuration of random variables is proportional to the product of all these factors.
+		Normalizing constant Z --> defined to be the sum or integral over all states of the product of the phi functions
+
+	They are not mutually exclusive families of probability distributions.
+
+	Being directed or undirected is not a property of a probability distribution, but any probability distribution may be described in both ways.
+
+	Structured probabilistic models --> as a language to describe which direct probabilistic relationships different machine learning algorithms choose to represent.
