@@ -52,16 +52,44 @@ Both representations provide the duality of independencies and factorization,
 	but they differ in the set of independencies they can encode and in the factorization of the distribution that they induce.
 
 1.2.2 Representation, Inference, Learning
-	Property used in graphical learning --> 
+	Property used in graphical learning --> The property that variables tends to interact directly only with very few others.
+	
+	This framework has many advantages.
+	1. Allows the distribution to be written down tractably.
+	2. The type of representation provided by this framework is transparent - This property is important for constructing models that provide an accurate reflection of our understanding of a domain. Models that are opaque can easily give rise to unexplained, and even undesirable, answers.
+	3. The same structure often also allows the distribution to be used effectively for inference - answering queries using the distribution as our model of the world. 
+		We provide algorithms for computing the posterior probability of some variables given evidence on others. 
+		These inferences work directly on the graph structure and generally orders of magnitude faster than manipulating the joint distribution explicitly.
+	4. This framework facilitates the effective construction of these models.
+	These methods support "Data-Driven Approach" to model construction that is very effective in practice. 
+	In this approach, a human expert provides rough guidance on how to model given a domain --> like the number of attributes, often some of the main dependencies.
+	I want metrics to test for the significance of creating a bond between two variables (bond meaning directed arrow from one to another node)
+	The details are usually filled in automatically,  by fitting the model to the data. 
+	The models produced by this process are usually much better refletions of the domain than models that are purely hand-constructed.
+	Moreover, they can sometimes reveal surprising connections between variables and provide novel insights about the domain.
+
+These three components - representation, inference, and learning - are critical components in constructing an intelligent system. We need a declarative representation that is a reasonable encoding of our world model. We need to be able to use this representation effectively to answer a broad range of questions that are of interest. And we need to be able to aquire this distribution, combining expert knowledge and accumulated data. PGMs are one of a small handful of frameworks that support all three capabilities for a broad range of problems.
+
+I want interest specific models. Usually the model is constructed then the question is asked.
+say I have already formed the question, construct the model that gives the best possible answer given my question.
 
 
+OVERVIEW OF THE CHAPTERS
 
+Chapter 2 - basic model
+	using graphs to encode distributions
+	properties of such distributions
 
+Chapter 3 - describe the Bayesian Network representation based on directed graphs
+	Bayesian network to encode probability distribution
+	Independence properties induced by the graph structure
 
+Chapter 4 - Markov Networks
+	independencies defined by the graph
+	induced factorization of the distribution
+	relationship between Markov networks and Bayesian Networks
+	Briefly describes a framework that unifies both
 
+Chapter 5 - 
 
-
-
-
-
-
+OMG THERE ARE 23 CHAPTERS, I'll write this later
