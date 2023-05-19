@@ -1,14 +1,33 @@
+Unfamiliar notations/Topics from "Notation":-
+	Moore-Penrose Inverse
+	Matrix Calculus
+		Hessian Matrix
+
 Easy to perform, but hard to describe
+Solution to these intuitive problems. Allow computers to learn from experience and understand the world in terms of a hierarchy of concepts, with each concept defined in terms of its relation to simpler concepts.
+	For this reason, we call this approach to AI "DEEP LEARNING".
+
+Chess -> can be described easily, but hard to ...
+
+Much of the knowledge of a person is subjective and intuitive, and therefore difficult to attribute in a formal way.
+	Key challenge is to "how to get this informal knowledge into a computer"
 
 Hierarchy of concepts --> enables the computer --> to learn complicated concepts by buildinf them out of simpler ones.
 
-FAMOUS PROJECTS
+Hard-code knowledge about the world in formal languages.
+	Computer can reason about statements in these formal languages using logical infererence rules.
+	This is known as "Knowledge based approach".
+
+	This failure suggests taht we need AI systems to aquire their own knowledge, by extracting patterns from raw data. --> this capability is known as "MACHINE LEARNING".
+
+FAMOUS PROJECTS of KBA
 	Cyc --> infererence engine and database of statements in a language called CycL
 
 "naive Bayes" algorithm --> separate legitimate e-mail from spam e-mail.
 
 Performance of simple machine learning algorithms depends HEAVILY on the "representation" of data
 	If we just give MRI scan it would be hard to predict cesarean delivery logistic regression
+		Individual pixels in an MPI scan have negligible correlation with any complications that might occur during delivery.
 
 	Humans find it much easier to do arithmetic in arabic than in roman representation
 
@@ -17,12 +36,13 @@ Performance of simple machine learning algorithms depends HEAVILY on the "repres
 	Many AI tasks can be solved by designing the right set of features to extract for that task.
 		Example :- Useful feature for speech identification --> estimate of the size of the speaker's vocal tract --> this clue helps in distinguishing between man, woman and child
 
-	For many tasks, it is difficult to know what features should be extracted
+	However, For many tasks, it is difficult to know what features should be extracted!
 
 	Solution to the above problem --> REPRESENTATION LEARNING
 		Use machine learning to discover not only the mapping from representation to output, but also the representation itself.
 
 		Learned representations >>> Hand-designed representations
+			<Human guidance at start is good I GUESS<Bayesian Inference>>
 
 		Rapidly adapt to new tasks, minimal human intervention
 
@@ -33,7 +53,9 @@ Performance of simple machine learning algorithms depends HEAVILY on the "repres
 		Quintessential example of representation learning algorithm is the "autoencoder"
 
 		AUTOENCODER
-			Combination of an "encoder" function, which converts the input data into a different representation and a "decoder" function which converts the new representation back into its original format.
+			Combination of an 
+				"encoder" function, which converts the input data into a different representation and a 
+				"decoder" function which converts the new representation back into its original format.
 
 			Autoencoders are trained to preserve as much information as possible and also trained to make the new representation have various nice properties.
 

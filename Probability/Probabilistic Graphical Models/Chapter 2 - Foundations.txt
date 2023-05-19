@@ -1,0 +1,78 @@
+Probability Theory, Information Theory and Graph Theory.
+
+------------------
+PROBABILITY THEORY
+------------------
+
+Frequentist approach --> gives probabilities a tangible semantics.
+
+An alternative interpretation views probabilities as subjective degrees of belief. Under this interpretation, the statement P(A)=0.3 represents a subjective statement about one's own degree of belief that the event A will come about.
+
+A more general conditional version of Bayes' Theorem
+	where all our probabilities are conditioned on some background event gamma also holds.
+
+Bayes' Theorem is important in that it allows us to compute the conditional probability P(A|B) from the inverse conditional probability P(B|A)
+
+RANDOM VARIABLE :-
+	Function that associates with each outcome in {big_omega} a value.
+	Random variables can be categorical or discrete or continuous.
+	
+	Val(X) --> number of elements in X
+
+	P(Intelligence=HIGH) = 0.3
+	P(Intelligence=HIGH | Grade=A) = 0.72
+	
+	*** 	P(Intelligence=HIGH)=0.3 is the prior knowledge about the students before learning anything else about a particular student.
+
+	While the conditional probability represents our more informed distribution after learning her grade.
+
+INDEPENDENCE :-
+	We say that the event {alpha} is independent of event {beta} P, denoted P |= {alpha} {perpendicular} {beta}, iff P(alpha | beta) = P(alpha) or P(beta)=0
+
+CONDITIONAL INDEPENDENCE :-
+	When independence is a useful property, it is not often that we encounter two independent events. A more common situation is when two events are independent given an additional event.
+{WHAT DOES THAT MEAN?}
+
+	MIT is conditionally independent of Stanford given Grade=A.
+
+	(A {perpendicular} B | {gamma}) iff P(A {intersection} B | {gamma}) = P(A | {gamma}) . P(B | {gamma})
+
+	(***) X is conditionally independent of Y given Z
+				denoted P(X {perpendicular} Y | Z)
+	
+	Something is P(X {perpendicular} Y | Z) "iff" 
+		P(X, Y | Z)	= P(X|Z) * P(Y|Z)
+
+	Properties of Conditional Independence:-	
+		Symmetry
+		Decomposition
+			(X perp Y,W | Z) => (X perp Y | Z)
+		Weak Union - I did not understand this too
+			(X prep Y, W | Z) => (X perp Y | Z,W)
+		Contraction - I did not understand this too
+			(X perp W | Z,Y) AND (X perp Y | Z) => (X prep Y,W | Z)
+		Intersection - I did not understand this too
+			(X perp Y | Z,W) AND (X perp W | Z,Y) => (X perp Y,W | Z)
+	
+2.1.5 Querying a Distribution
+	Our focus throughout this book is on using a joint probability distribution over multiple random varibles to answer queries of interest.
+
+	2.1.5.1 Probability Queries
+		Given evidence E, query-variables Y
+			We want P(Y | E=e) which is the posterior probability distribution of the values y of Y conditioned on the fact that E=e.
+
+	2.1.5.2 MAP Queries (Most Probable Explaination)
+		A second type of task is that of finding a high probability joint assignment to the subset of variables
+
+	That just means that we are trying to find the values for all the variables which gives the highest probability right?
+
+	Simplest variant is the Most Probable Explaination
+
+	More precisely, let W = X - E, our task is to find the mostly likely assignments to the variables in W given the evidence E = e
+	MAP(W | e) = argmax{over w} P(w, e)
+
+	In a MAP query, we are finding the most likely joint assignment to W.
+	To find the most likely assignment to a single variable A, we could simply compute P(A|e) and then pick the most likely value. However, the assignment where each variable individually picks its most likely value can be quite different from the most likely joint assignment to all variables simultaenously. 
+	
+	2.1.5.3 Marginal MAP Queries
+		

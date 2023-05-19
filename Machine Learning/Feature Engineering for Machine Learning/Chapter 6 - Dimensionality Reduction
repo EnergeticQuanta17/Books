@@ -1,0 +1,13 @@
+Automatic data collection and Feature Generation Techniques
+	Not all of them are useful
+
+	Chapter 3 and 4 --> Frequency based filtering and feature scaling as ways of pruning away uninformative features
+
+PCA -> Model-Based Feature Engineering tehcniques
+	Use the information from the data
+
+	PCA is defined around the principal axes of the data.
+
+	From here on, there is no clear-cut line between data, features and models.
+	This is exactly where the excitement lies in current research on feature engineering.
+

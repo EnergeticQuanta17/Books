@@ -133,4 +133,30 @@ These models provide a formal framework for a variety of fundamental problems
 
 Algorithms for which no theoretical analysis exists are tried out in practice, and the profile of where they succeed and fail often provides the basis for subsequent analysis.
 
-DID NOT READ HISTORICAL NOTES
+Historical Notes
+	Modern probability theory - measure-theoretic underpinnings
+	Bayes theorem
+
+	Gibbs -> undirected graph to represent the distribution over a system of interacting particles
+	Genetics -> Path analysis
+	Wright -> directed graph to study inheritance
+
+	Contigency models -> Log-Linear models
+
+	Provides support for making decisions under uncertianty. 
+	Naive bayes models --> restricts itself to a small set of possible hypotheses and assumes that the difference evidence variables are independent given each hypotheses.
+		Very successful
+
+	"People dont manipulate numbers while reasoning"
+
+	Other frameworks for handling uncertainty ->
+		Fuzzy logic
+		Possibility theory
+		Dempster-Shafer functions
+
+	Wideacceptance of Probabilistic methods was driven by:-
+		1. Theoretical Developments of "Bayesian Network Framework".
+		2. Efficient reasoning in "Probabilistic Graphical Models"
+		Large scale successful expert systems based on this framework that avoided unrealistically strong assumptions made by early probabilistic expert systems.
+
+	Probabilistic methods in general and Probabilistic Graphical Models in particular have gained universal acceptance in a wide range of communities.s

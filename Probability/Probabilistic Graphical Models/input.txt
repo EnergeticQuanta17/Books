@@ -1,0 +1,29 @@
+1 Introduction 1
+1.1 Motivation 1
+1.2 Structured Probabilistic Models 2
+1.2.1 Probabilistic Graphical Models 3
+1.2.2 Representation, Inference, Learning 5
+1.3 Overview and Roadmap 6
+1.3.1 Overview of Chapters 6
+1.3.2 Reader’s Guide 9
+1.3.3 Connection to Other Disciplines 11
+1.4 Historical Notes 12
+2 Foundations 15
+2.1 Probability Theory 15
+2.1.1 Probability Distributions 15
+2.1.2 Basic Concepts in Probability 18
+2.1.3 Random Variables and Joint Distributions 19
+2.1.4 Independence and Conditional Independence 23
+2.1.5 Querying a Distribution 25
+2.1.6 Continuous Spaces 27
+2.1.7 Expectation and Variance 31
+2.2 Graphs 34
+2.2.1 Nodes and Edges 34
+2.2.2 Subgraphs 35
+2.2.3 Paths and Trails 36
+x CONTENTS
+2.2.4 Cycles and Loops 36
+2.3 Relevant Literature 39
+2.4 Exercises 39
+
+Give code to convert the above into a hierarchy for a textbook
