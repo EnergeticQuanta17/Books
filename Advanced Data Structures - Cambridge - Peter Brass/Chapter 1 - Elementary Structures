@@ -1,0 +1,8 @@
+Stack and Queue --> common generalization --> Double-Ended Queue
+
+Stack should support three opertions:-
+	1. push
+	2. pop
+	3. stack_empty
+
+	

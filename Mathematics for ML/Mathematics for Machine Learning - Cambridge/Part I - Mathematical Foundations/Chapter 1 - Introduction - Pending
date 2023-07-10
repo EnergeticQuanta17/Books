@@ -1,0 +1,37 @@
+Machine Learning
+	Designing algorithms that can automatically extract valuable information from data
+
+	Three concepts in code Machine Learning
+		Data
+		Model
+		Learning
+
+	The goal of machine learning is to design general-purpose methodologies to extract valuable patterns from data.
+		Ideally without much domain specific expertise.
+
+	We design models that are typically related to the process that generates the data, similar to the dataset we are given.
+
+	Goal: Good models that generalize well to yet unseen data
+
+	Leaning
+		A way to automatically find patterns and structure in data by optimizing the parameters of the model.
+
+Algorithms 
+	-  as a predictor
+	-  as a training
+
+Model
+	typically used to describe a process for generating data, similar to the dataset at hand.
+
+We are interested in the model to perform well on unseen data.
+	Generalizability
+
+Main Concepts of Machine Learning
+	1. We represent data as vectors
+	2. We choose appropriate model, either using the probabilistic or optimization view
+	3. We learn from available data by using numerical optimization methods with the aim that the model performs well on the data not used for training.
+
+----------------------------------------------
+READ FROM 
+	Part I is about Mathematics
+----------------------------------------------

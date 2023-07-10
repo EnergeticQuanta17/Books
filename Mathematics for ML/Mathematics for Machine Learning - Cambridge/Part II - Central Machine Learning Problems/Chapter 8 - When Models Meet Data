@@ -1,0 +1,27 @@
+Four Pillars of Machine Learning
+	Regression
+	Dimensionality Reduction
+	Density Estimation
+	Classification
+
+8.1 Data, Models and Learning
+	It is not entirely obvious how to objectively define the word "good".
+		Guiding principle :- Should perform well on unseen data
+
+	Performance Metrics
+		Accuracy, Distance from ground truth
+
+	In this chapter,
+		how to select among different models
+
+	Outline :-
+		Empirical Risk Minimization
+
+		The principle of maximum likelihood
+
+		Idea of Probabilistic Models
+			Graphical Language for specifying Probabilistic Models
+
+		Model Selection
+
+	

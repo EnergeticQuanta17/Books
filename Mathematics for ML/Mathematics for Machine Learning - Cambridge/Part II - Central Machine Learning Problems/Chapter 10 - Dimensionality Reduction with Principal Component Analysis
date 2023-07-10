@@ -1,0 +1,35 @@
+Very High-Dimensional Data
+	Hard to analyze
+	Interpretation is difficult
+	Visualization is nearly impossible
+	Storage of the data vectors are expensive
+
+The imp property of High-Dimensional Data that we can exploit
+	Overcomplete --> many dimensions are redundant and can be explained in terms of others
+
+	Correlated --> data possess an intrinsic lower-dimensional structure
+
+	Dimensionality Reduction exploits structure and correlation
+		Allows to work with more compact representation of the Data
+			IDEALLY without losing information
+
+		As a compression technique
+
+PCA --> An algorithm for "Linear Dimensionality Reduction" 
+	Use cases
+		Identification of simple patterns
+		Latent Factors
+		Strucutres of High-Dimensional Data
+
+	In Signal-Processing
+		it is known as Karhunen-Loeve transform
+
+	Derivation of PCA from first principles
+		Basis change
+		Projections
+		Eigenvalues
+		Gaussian distributions
+		Constrained Optimization
+
+DR exploits the property of High-Dimensional data that it often lies on a "low-dimensional subspace"
+

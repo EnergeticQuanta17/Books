@@ -1,0 +1,84 @@
+Basic methods of gray-level and binary image processing
+
+Essential tools of image Fourier Analysis
+
+Linear Convolutional Systems
+
+Advanced Image Processing Algorithms
+	Wavelets
+	Color
+	Statistical
+	Noise models of images
+
+Methods for improvement
+	Enchancement
+	Denoising
+	Restoration(deblurring)
+
+Image compression
+	Lossless compression
+	JPEG and JPEG-2000 standards
+	Wavelet image compression
+
+Image Analysis
+	Edge Detection
+	Image Quality Assessment
+
+Image Watermarking
+Fingerprint recognition
+Digital Microscopy
+Face recognition
+Digital Tomography
+
+Positron Emission Tomography
+Magnetic Resonance Imaging
+Computer-aided Tomography
+	X-ray in multiple angles
+
+Astronomers
+	Astronomers	are known by "in what wavelength they specialize":
+		Radio Astronomers
+		X-ray Astronomers
+
+Non-EM radiation is also useful for imaging
+	Ultrasound to create images of the human body
+	Low-frequency sound waves --> create images of the earth's subsurface
+
+Source --> Interacts with material --> Transduced to electric signal --> Digitalized
+
+Can be used to extract information about the radiation source and/or about the objects with which the radiation interacts
+
+Reflection Images
+	Radar Images
+	Sonar Images
+	Laser Images
+	Some types of Electro Microscopic Images
+
+Emission Images
+	Self-luminous
+
+	Thermal or infrared Images
+
+	The information to be had --> often primarily internal to the  object
+
+	The image may reveal how the object creates radiations and hence something of the internal strucutre of the object being imaged.
+
+	However, it may also be external --> e.g. thermal camera
+
+Absorption Images
+	Yield information about the internal strucuture of the object
+
+	Radiation is partially aborbed or attenuated sensed radiation in the recorded image
+
+Range of camera --> 10**(-10) to 10**30
+	"Find out why is is easier for telescope than microscope"
+
+		40 orders of magnitude
+
+	Techniques are applicable to any scale
+
+Multi-Scale concept
+	Eg:- Coins --> Spiral
+		Small scale --> Larger scale
+
+

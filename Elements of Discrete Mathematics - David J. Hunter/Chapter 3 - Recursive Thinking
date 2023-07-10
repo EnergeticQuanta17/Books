@@ -1,0 +1,100 @@
+The natural phenomenon of recursion prevades many areas of mathematics.
+
+3.1 Recurrence Relations
+	Bottom-Up
+		1 to 5
+
+	Top-Down
+		5 to 1
+
+	A well-defined recurrence relation needs a nonrecursive base case that gives at least one value of the function explicitly
+
+Pg 145 --> Why only hexagons?? HMMM
+	It has an increase decrease pattern
+
+	Encoder-Decoder?
+
+Example 3.4
+	Hexagon --> H(n) will have n hexagons on each edge
+		But 1 overlap at every vertex will happpen
+		Hence 6n-6
+			6 --> edges, n --> n hexagons on each edge, 6 --> overlap
+
+Built on previous layers
+
+Example 3.5
+	Number of elements in powerset 
+
+Example 3.6
+	Number of nodes in complete binary tree
+
+Example 3.7
+	Number of edges in complete graph
+
+To show:- R(n) = f(n)
+	R(n) = f(n-1) + n_part_of_eqn
+	R(n) = f(n)
+
+
+Mathematical Induction is a difficult topic.
+	WHY?
+
+	This section only discussed a narrow view of the subjet; verifying a closed-form solution
+
+Failure to find a counterexample to a statement does not mean that the statement is true.
+
+What is "line map" ?
+	And think about its recursive definition
+
+Recursive Geometry
+	Limit of a recursive function
+		limit of an example recursive series is 1
+
+	Similarly, we can consider the limit of a recursive definition of a geometric patterns.
+	This is one way to construct fractals, a special type of shape with infinite layers of self=similarity.
+
+	Example 3.23
+		Start with equilateral triangle
+		Pull the middle of each edge to make a triangle
+		Limit is a fractal known as Koch Snowflake
+
+	Exercises 3.24
+		Fractal model for the Badda-Bing axiomatic system
+
+	Mathematical study of Fractals is relatively new
+		2nd half of 20th century
+		using computers
+
+		FRACTALS ARE THE KEY TO SOLVING THE 3n+1 problem -- MARK MY WORDS
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+DO THESE PROBLEMS WHEN U READ THIS:-
+	Exercises 3.2
+		3, 4, 5 --> I see an interesting pattern
+		15
+		17
+		18
+		19
+		20
+
+	Exercises 3.3
+		Didn't see the others, 23 is soo beautiful
+
+	

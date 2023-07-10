@@ -1,0 +1,48 @@
+Analytic Combinations --> quantitative predictions of 
+	"properties" of large structured combinatorial structures
+
+Essential for Analysis of Algorithms
+and the study of scientific models
+	Probability Theory
+	Statistical Physics
+	Computational Biology
+	Information theory
+
+Symbolic enumeration methods
+Complex Analysis
+Generating Functions
+
+Above topics can be applied on
+	permutations
+	sequences
+	strings
+	walks
+	paths
+	trees
+	graphs
+	maps
+	planar configurations
+	and so on
+
+Generative functions are central objects of study of the theory.
+
+Generating functions --> viewed as "Analytic Objects" --> mapping from complex plane to itself
+
+Suitable adaptation of methods also opens the way to quantitative analysis of characteristic parameters of large structures via a perturbational approach
+
+Approach provided by Analytic Combinatorics can we viewed as an "operational calculus"
+	Three concepts:-
+	1. Symbolic Methods --> encode counting sequences
+	2. Complex Asymptotics --> can extract asymtotic counting information from generating functions
+	3. Random Structures --> Probabilistic properties of large random structures
+		deformation = adding auxially variable
+		perturbation = examining the effect of small variations of such uxially craiabls
+
+Large number of examples in this book
+
+Discrete Probabilistic Models
+
+
+--------------------
+DONE TILL PAGE (x)
+--------------------

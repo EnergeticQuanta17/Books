@@ -1,0 +1,62 @@
+Ideas, Analysis and Implementation Details
+
+Search Trees
+
+Structures for sets of intervals oe piecwise constant functions
+
+Orthogonal range search structures
+
+Heaps
+
+Union-Find Structures
+
+Dynamization
+
+Persistence of structures, structures for strings, and hash tables
+
+
+------------------------------------------------------------------PREFACE------------------------------------------------------------------
+
+Data Structure is a kind of higher-level instruction in a virtual machine:
+	when an algorithm needs to execute some operations many times, we identify which operations are needed and how they can be realized in the most efficient way.
+
+	Basic Question of Data Structure:-
+		"Given a set of operations whose intended behavior is known, how should we realize that behavior?"
+
+Computational Geometry
+Combinatorial Optimization
+
+Algorithmic Questions
+	of how to do something nontrivial
+
+Data Structure --> models some abstract object
+	Implements a number of operations:-
+		1. Creation and Deletion Operations
+		2. Update operations
+		3. Query operations
+
+Query operations do not change the abstract	object, although they might change the representation of the object in the data structure
+	"Adaptive Data Structure"
+
+Dynamic Data Structures
+	Allow updates and Queries
+
+Static Data Structures
+	No updates
+	Only Queries
+
+"For some of the more complex objects we encounter, no dynamic strucutre is known" ---- WHAT DOES THIS MEAN?
+
+To express speed, we need a measure of comparison
+	This is the size of the underlying object
+
+	NOT our representation of that object
+
+	(Notice that a long sequence of update operations can still result in a small object)
+
+Big-Oh Notaion
+
+Weaker version --> Amortized complexity
+	READ FROM HERE
+
+	Pg (xiv)

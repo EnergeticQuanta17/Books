@@ -1,0 +1,61 @@
+Vector Objects
+	Polynomials
+	Audio signals
+
+"Be careful to check whether array operations actually perform vector operations when implementing on a computer"
+
+New way to find "General Solution"
+	1. Make it into Basic and Non-Basic
+	2. Express all the non-basic column as a linear combination of the basic columns
+	3. Then we get an equation in terms of c_i {the columns}
+	4. Shift everything to one side to make it lambda_1 * the equation = 0 
+	5. Now realize that if we add to x, this transformation does not affect b (which is Ax) because we are adding 0 AND due to vector addition-splitting property
+	6. Hence basic solution + No. of non-basic lambdas of Linear Combinations
+
+Minus-1 Trick
+	OMG I CANT BELIEVE THIS
+
+	Null-Space concept
+
+	After finding the Row-Reduced-Echelon form
+	Add rows such that all diagonal elements are non-zero
+	The row number which u added, read out the column with that number --> becomes the lambda_vectors
+
+	This works only because it is reduced
+		as all the basis have value 1
+
+	And non-basis will be -1
+
+	In diagonal only 1 and -1
+
+Moore-Penrose Pseudo Inverse
+	Pre-multiply by the transpose of A
+	Then Isolate x
+	Whatever is premultiplied to b is the "Moore-Penrose Pseudo Inverse"
+
+	The solution obtained corresponds to the minimum norm least-squares solution.
+
+	Disadvantage:-
+		Too many computations - matrix multiplication
+
+		Also for numerical precision 
+
+Linear Equations solving for very large system of equations
+	Stationary iterative methods
+		Richardson method
+		The Jacobi method
+		The Gauss-Seidel method
+		The successive overrelaxation method
+		Krylov subspace methods such as conjugate methods, generalized minimal residual or biconjugate methods
+
+		x(k+1) = C * x(k) + d
+			We do this iteratively for suitable C and d that reduces the residual error 2norm(x(k+1), x*)
+				x* is optimal solution
+
+Groups
+	Heavily used in cryptography, coding theory and graphics
+
+	Graphics????
+
+General Linear Groups
+	----------------------------------------s

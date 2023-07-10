@@ -1,0 +1,60 @@
+In regression,
+	map R^D dimension to R
+
+	y_n = f(x_n) + epsilon
+		epsilon is an i.i.d R.V. that describes measurement/observation noise and potentially unmodeled processes
+			zero-mean is assumed
+
+Each point has a measurement noise associated with it
+	And for each point we can plot a distribution along the outward dimension
+
+Applicaitions of Regression
+	Time Series Analysis (e.g. System Identification)
+	Control and Robotics (e.g. Reinforcement Learning, Forward/Inverse Model Learning)
+	Optimization (e.g. Line Searches, Global Optimization)
+	Deep-Learning applications (e.g. Computer Games, Speech-to-text translation, Image Recognition, Automatic Video Annotation)
+
+	Classification Algorithms
+
+Finding a "Regression Function" requires solving a varity of problems:-
+	1. Choice of model (type) and the parameterization
+		What function classes are good? (Polynomial)
+		What particular paramterization? (Degree of Polynomial)
+
+		Answered by Model Selection
+
+	2. Finding good parmameters
+		How to find good model paramters?
+			Need to see the loss/objective functions 
+
+		Optimization algorithms that allow us to minimize the loss
+
+	3. Overfitting and model selection
+		Does not generalize
+
+		Overly flexible and expressive
+
+	4. Relationship between loss functions and paramter priors
+		Loss functions are often motivated and induced by probabilistic models.
+
+		Connection between loss functions and the underlying prior assumptions that induce these losses.
+
+	5. Uncertainty modeling
+		Given that this finite amount of training data does not cover all possible scenarios,
+			we may want to describe the remaining parameter uncertainty to obtain a measure of confidence at test time
+
+			The smaller the training set, the more important uncertainty modeling.
+
+			Consistent modeling of uncertainty equips model predictions with confidence bounds.
+
+			<<< CHECK THIS OUT >>>
+
+
+	Outline :-
+		Maximum Likelihood and Maximum A Posteriori
+			to find optimal model parameters
+
+		Generalization errors and overfitting
+
+		Bayesian Linear Regression
+			Reason about model parameters at a higher level, thereby removing some of the problems encountered in Maximum Likelihood and MAP estimation.
