@@ -1,0 +1,18 @@
+Machine Learning --> designing algorithms -> automatically extract valuable information/patterns
+	General purpose methodologies
+
+	Data
+	Model
+	Learning
+
+A model is said to learn from data if its performance on a given task improves after the data is taken into account.
+	Generalize well to unseen data
+
+	Learning --> finding patterns and structure in data by optimizing parameters of model
+
+Understanding Math Principles enables
+	Creating new Machine Learning solutions
+	Understanding and Debugging
+	Inherent assumptions and limitations of methodologies
+
+1.1 Finding Words for Intuitions
