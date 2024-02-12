@@ -1,0 +1,252 @@
+Python offers ways to build a simple class that is just a collection of fields, with little or no extra functionality. That pattern is called "DATA CLASS" -- data 'classes' is one of the packages that supports this pattern.
+
+This chapter covers three class builders:-
+1. collections.namedtuple
+2. typing.namedTuple -- requires type hints on the fields
+3. @dataclasses.dataclass -- A class decorator
+
+typing.TypedDict does not build concrete classes that you can instantiate. Its just syntax to write hints for function parameters and variables that will accept mapping values used as records, with keys as field names.
+
+__repr__ --> is usually inherited from 'object'
+
+== --> is meaningless in object comparision
+
+use __eq__ method inherited from 'object' to compare object IDs.
+
+Usually data class builders provides the following methods:-
+1. __init__
+2. __repr__
+3. __eq__
+
+None of the class builders in this chapter depend on Inheritance to do their work.
+
+collections.namedtuple & typing.NamedTuple --> are 'tuple' subclasses
+
+@dataclass is a class decorator that does not affect the class hierarchy in any way. 
+
+Each of them uses metaprogramming techniques to inject methods and data attributes into the class under construction.
+
+We can also use tpying.NamedTuple in 'class' statement, with type annotations -----> WHAT DOES THIS MEAN?
+	--> easy to override methods  or add new ones
+
+class Coordinate(NamedTuple):
+    lat: float
+    lon: float
+    def __str__(self):
+        ns='N' if self.lat>=0 else 'S'
+        eq='E' if self.lon>=0 else 'W'
+        return f'{abs(self.lat):.1f}°{ns}, {abs(self.lon):.1f}°{we}'
+For the above defined class, NamedTuple --> generates the __int__ method --> for first two lines
+
+Like the NamedTuple, --> The 'dataclass' decorator supports PEP526 syntax to declare instance attributes.
+The decorator reads the variable annotations and automatically generates methods for your class.
+
+@dataclass does not depend on inheritance or a metaclass, so it won't interfere with our own use of these mechanisms.
+
+Comparision b/w the three data-class-builders :-
+1. Mutable Instances --> only in dataclass
+2. class statement syntax --> not there for namedtuple
+3. construct dict --> x._asdict() for namedtuple & NamedTuple whereas it is 
+	dataclasses.asdict(x)
+4. get field names --> x._fields & x._fields & [f.name for f in dataclass.fields(x)]
+5. get defaults --> x._field_defaults & x._field_defaults & [f.default for f in dataclass.fields(x)]
+6. get field types --> N/A & x.__annotations__ & x.__annotations__ 
+7. new instance with changes --> x._replace() & x._replace() & dataclasses.replace(x,...)
+8. new class at runtime --> namedtuple(...) & NamedTuple(...) & dataclass.make_dataclass(...)
+
+Class decorators and metaclasses --> are ways of customizing class behaviour beyond what is possible with inheritance.
+
+
+NamedTuple and dataclass --> have annotations.
+	Avoid reading from __annotations__
+	Instead, call 'inspect.get_annotations(MyClass)' or 'typing.get_type_hints(Myclass)' --> these functions provide extra services --> such as resolving forward references in type hints.
+
+MUTABLE INSTANCES
+First two class builders are tuple based hence they are immutable.
+Bydefault @dataclass produces mutable classes. But the decorator accepts a key-word argument "frozen" as in the example in jupyter notebook.
+	When this is set, then if we try to assign a value to a field after the instance is initialized it will raise an exception.
+
+CLASS STATEMENT SYNTAX
+last 2 support this --> making it easier to add methods and docstrings to class you are creating.
+
+CONSTRUCT DICT
+	Applicable for all three types
+	Used to contruct a 'dict' object from the fields in a data class instance
+
+GET FIELD NAMES AND DEFAULT VALUES
+	Applicable for all three types
+	We can get the same metadata from data 'class' decorated class using the fields function from the 'dataclass' module. It returns a tuple of Field objects that have several attributes, including 'name' and 'default'.
+
+GET FIELD TYPES
+	2nd and 3rd types --> have mapping of field names to type the __annotations__ class attribute. 
+
+NEW INSTANCE WITH CHANGES
+	Given a named tuple instance x, the call x._replace(**kwargs) returns a new instance with some attribute values replaced according to the keyword arguments given.
+	The 'dataclass.replace(x,**kwargs)' module-level function --> does the same for an instance of a 'dataclass' decorated class.
+
+NEW CLASS AT RUNTIME
+	To build data classes on the fly, at runtime, use the default function call syntax of collections.namedtuple, which is likewise supported by typing.NamedTuple. The dataclass module provides a 'make_dataclass' function for the same purpose.
+
+CLASSIC NAMED TUPLES
+	collections.namedtuple --> is a factory function that builds subclasses of 'tuple' enhanced with field names, a class name, and an informative __repr__ method. 
+	The classes built from this can be used anywhere tuples are needed.
+	Many functions of the Python Standard Library return in named tuples without affecting the user's code at all.
+
+Each instance of a class built by 'namedtuple' takes exactly the same amount of memory as a tuple because the field names are stored in the class.
+
+As a tuple subclass, it also inherits __eq__ and __lt__ --> making it possible to sort if needed
+
+A named tuple offers a few attributes and methods in addition to those inherited from the tuple.	
+	The '_fields' class atrribute 
+	The class method '_make(iterable)' 
+	The '_asdict()' instance method
+
+_asdict --> returns a simple dict
+
+namedtuple --> accepts the 'defaults' keyword-only argument providing an iterable of N default values for each of the N rightmost fields of the class.
+
+Classes built by typing.NamedTuple don't have any methods beyond those that collections.namedtuple also generates - and those that are inherited from 'tuple'. The only difference is the presence of the __annotations__ class attribute -- which python completely ignores at runtime.
+
+Type hints <--> Type Annotations --> are ways to declare the expected return type of function arguments, return values, variables, and attributes.
+	They are not enforced by Python bytecode compiler and interpreter.
+
+The basic syntax of variable annotation is:-
+	var_name: some_type
+
+The Acceptable type hints :-
+	A concrete class (example:- str or FrenchDeck)
+	A parameterized colltion type (example:- list[int],tuple[str,float])
+	typing.Optional (example:- Optional[str] -- to declare a field that can be a str or None)
+
+At import time -- when a module is loaded -- Python does read them to build the __annotations__ dictionary that typing.NamedTuple and @dataclass then use to enahnce the class.
+
+Check out what __doc__ does
+
+# here a and b --> are called "descriptors" -- advanced feature discussed in later chapers
+	Think of them as similar to property getters: methods that don't require the explicit call operator () to retrieve an instance attribute.
+	In practice this means a and b will work as read-only instance attributes -- which makes sense when we recall that DemoNTClass instances are just fancy tuples and tuples are immutable.
+
+When creating an object, we need to provide all the values defined in the descriptors.
+	THIS IS THE REASON WHY PYTHON WANTS US TO PUT ALL THE DESCRIPTORS WITHOUT INITIAL VALUE IN FRONT OF THOSE WHOSE INITIAL VALUES IS ALREADY PROVIDED.
+
+There is no attibute named 'a' in DemoDataClass -- in contrast with DataNTClass which has a descriptor to get 'a' from the instances as read-only attributes <_collections._tuplegetter>.	
+	Attribute 'a' only exist in instances of DemoDataClass.
+	'b' and 'c' are class attributes
+
+DemoDataClass is mutable, no type checking is done at runtime.
+
+We can also add new 'z' attribute --> this is normal Python behaviour --> regular instances can have their own attributes that don't appear in the class.
+
+
+More about @dataclass
+	The decorator accepts several keyword arguments. This is the signature
+	@dataclass(*,init=True,repr=True,eq=True,order=False,unsafe_hash=False,frozen=False)
+
+Setting an attribute after __init__ defeats the __dict__ key-sharing memory optimization.
+
+In @dataclass --> Instances will be reasonably safe from accidental change, but not really immutable.
+	@dataclass --> emulates immutability by generating __setattr__ and __getattr__, which raise dataclass.FrozenInstanceError -- a subclass of Attribute error -- when the user attempts to set or delete a field.
+
+Given the dynamic nature of Python we can find hacks and make a Frozen @dataclass into mutable.
+
+If the 'eq' and 'frozen' arguments are both 'True', @dataclass produces a suitable __hash__ method.
+	The generated __hash__ will use data from all fields that not individually excluded using a field option. WHAAAAAAT?
+	If frozen is False then @dataclass will set __hash__ to None, signalling that the instances are unhashable, therefore overriding __hash__ from any superclass.
+
+We can force Data Classes to create a __hash__ method (with/by setting) 'unsafe_hash=True'.	
+	This is the case where the class is logically immutable but can nonetheless be mutated.	
+	This is a specialized use case and should be considered carefully.
+
+	For more on unsafe_hash --> classes.dataclass documentation
+
+Futhur customization of the generated data class can be done at field level.
+	Most basic field opiton: providing (or not) a default value with the type hint
+	The instance fields will become parameters in the generated __init__.
+
+	Mutable defaults are a common source of bug.
+		Mutable default values are easily corrupted when one invocation of the function mutates the default, changing the behaviour of furthur invocations.
+		Class attributes are often used as default attribute values for instances, including in data classes.
+
+		@dataclass uses the default values in the type hints to generate parameters with defaults for __init__.
+		To prevent bugs, @dataclass rejects the class definition.
+
+	The default_factory parameter provides a function, class or any other callable, which will be invoked with zero arguments to build a default value each time an instance of the data class is created.
+		It creates list "through default_factory" which makes it hard to make it mutable --> I GUESS CHECK ONCE
+
+OTHER KEYWORD ARGUMENTS OF THE FIELD FUNCTION {from dataclasses import field} ARE:-
+default --> default value for field --> _MISSING_TYPE
+default_factory --> to produce default --> _MISSING_TYPE
+init --> include field parameters to __init__ --> True
+repr --> include field in __repr__ --> True
+compare --> use field in comparison methods --> True
+hash --> include field in __hash__ function --> None
+metadata --> Mapping with user-defined data; ignored by @dataclass --> None
+
+dataclass._MISSING_TYPE --> is a sentinel value indicating the option was not provided.	
+	If it exists so we can set None as an actual default value, a common use case. ---> WHAAAAAAAAAAAT?????
+
+The __init__ method generated by @dataclass only takes the arguments passed and assigns them.
+	If we want to do more than {just initialize} in the __init__, we use __post_init__.
+	When that method exists, @dataclass will add code to the generated __init__ to call __post_init__ as the last step.
+
+Creating a hierarchy of dataclass is a bad idea, especially if superclass is not abstract.
+
+To code a class variable with type hint, we need to use  a pseudotype name 'typing.ClassVar', which leverages the generics [] notation to set the type of the variable and also declare it a class attribute.
+
+The @dataclass decorator doesn't care about the types of annotations, except in two cases:-	
+	1. if the type is 'ClassVar' --> an instance field will not be generated for this
+	2. The type of the field is relevant to @dataclass when declaring init-only variables
+
+INITIALIZING VARIABLES 
+Sometimes we need to pass arguments to __init__ that are not instance fields.
+	Such arguments are called init-only variables by the 'dataclasses' documentation.
+	To do that, the dataclasses module provides the pseudotype 'InitVar', which uses the same syntax of tying.ClassVar
+
+Dublin Core provides the foundation for a more typical @dataclass
+	The Dublin Core Schema is a small set of vocabulary terms that can be used to describe digital resources as well as physical resources such as books or CDs and objects like artworks.
+
+	The standard defines 15 optional fields; the 'Resource' class in JPN(jup-note) uses 8 of them.
+
+!r calls repr(of_that_variable) --> VERY INTERESTING
+
+Data Class as a Code Smell
+Data Class as Scaffolding
+Data Class as Intermediate Representation
+	
+PATTERN MATCHING CLASS INSTANCES
+	Class patterns are designed to match class instances by type -- and optionally by attributes.
+
+	There are thre variations of class patterns:
+	1. simple
+	2. keyword
+	3. positional
+
+SIMPLE CLASS PATTERNS
+	case [str(name), _, _, (float(lat), float(lon))]:
+		--> first parameter must be a string and so on
+
+
+	The syntax for class patterns looks like a constructor invocation. The following is a class pattern that matches float values without binding a variable:-
+		match x:
+			case float():
+				do_something_with(x)
+
+	This pattern of using float() instead of float(x) --> applies only to the nine blessed built-in types -->
+		bytes
+		dict
+		float
+		frozenset
+		int
+		list
+		set
+		str
+		tuple
+
+	If the class is not one of these 9 types, then the argument-like variables represent patterns to be matched against attributes of an instance of that class.
+
+KEYWORD CLASS PATTERNS
+	See JPN
+
+POSITIONAL CLASS PATTERNS
+	City.__match_args__
+	See JPN

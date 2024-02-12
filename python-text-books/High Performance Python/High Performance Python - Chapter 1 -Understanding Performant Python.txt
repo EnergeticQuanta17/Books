@@ -1,0 +1,52 @@
+Two ways of high performance
+1. Reducing overhead (writing efficient code)
+2. Finding a more suitable algorithm
+
+By understanding the best way that bits can be moved in the real hardware and the way Python's abstractions force your bits to move --> we can make progress towards writing high performance programs in Python.
+
+CPU has several memory: the L1, L2, and sometimes even the L3 and L4 cache --> These extra memory units are connected to the CPU with a special bus called the "backside bus".
+
+COMPUTING UNTIS
+GPU --> intrinsic parallel nature	
+
+Main properties in interest are
+	Number of operations it can do in one cycle? --> Measured by IPC
+	How many cycles in one second? --> Measured by CLOCK SPEED
+
+higher IPC --> drastically affect computing by changing the levlel of  vectorization that is possible
+	Vectorization is when a CPU is provided with multiple pieces of data at a time and is able to operate on all of them at once.
+	This sort of CPU instruction is called SIMD(Single Instructin, Multiple Data)
+
+Chip manufactures --> for speed do this -->
+	hyperthreading
+	clever out-of-order excecution
+	multicore architectures
+
+Ahmdal's law
+	If a program designed to run on multiple cores has some routines that must run on one core, this will be the bottleneck for the final speedup that can be achieved by allocating multiple cores.
+
+A major hurdle with utilizing multiple cores in Python is Python's use of a "global interpreter lock"(GIL).
+	The GIL makes sure that a Python process can only run only one instruction at a time, regardless of the number of cores it is currently using.
+
+	This problem can be avoided by using other standard library tools, like
+		multiprocessing
+		or technologies like --> numexpr, Cpython, distributed models of computing.
+
+The read/write speed is heavily dependent on the way that data is being read.
+	For example:- most memory units perform much better when they read one large chunk of data as opposed to small chunks of data. ('sequential' vs 'random')
+
+The memory units also have 'latency', which can be characterized as the time it takes the device to find the data that is being used.
+
+Various memory units:-
+	Spinning hard drive -- terra-byte range
+	Solid state hard drive -- giga-byte range
+	RAM -- giga-byte range
+	L1/L2 cache -- kilo-byte range
+
+	Speed and capacity is inveresly proportional
+
+Methods such as 
+	asynchronous I/O
+	preemptive caching 
+provide ways to make sure that data is always where it needs to be without having to waste computing timesd
+

@@ -1,0 +1,144 @@
+Functions in Python are first-class objects
+
+Definition of first-class object:-
+	Created at runtime
+	Assigned to a variable or element in data structure
+	Passed as an argument to a function
+	Returned as the result of a function
+
+Having functions as first-class objects is an essential feature of functional languages --- Clojure, Elixir, Haskell.
+
+"first-class functions" <===> "functions as first-class objects"
+	shorthand
+
+functions --> are instances of <class 'function'>
+
+Having first-class functions enables programming in a functional style.	
+
+One of the hallmarks of functional programming is the use of higher-order functions
+
+HIGHER ORDER FUNCTIONS
+	A functions that takes a function as an argument or returns a function as the result.
+
+	One example --> 'map'
+				--> 'sorted' which provides the optional 'key' argument
+
+In functional programming paradigm, some of the best known higher-order functions are
+	map
+	filter
+	reduce
+	apply
+
+If you need a function with dynamic set of arguments, use
+	fn(*args, **kwargs)
+
+MODERN REPLACEMENTS FOR map, filter AND reduce
+	A listcomp or genexp does the job of 'map' and 'filter' combined.
+
+'map' and 'filter' return generators -- a form of iterator
+
+To use a higher-order function, sometimes it convenient to create a small, . one-off function. That is why anonymous functions exist.
+
+ANONYMOUS FUNCTIONS
+	'lambda' keyword creates an anonymous function within a Python expression
+
+	Hence this limits the body of lambda functions to be --> pure expressions.
+		In other words, the body cannot contain other Python statements such as 
+			while
+			try
+			=
+			etc
+		:= can be used
+
+	The 'lambda' syntax is just syntactic sugar: lambda expression creates a function object just like the 'def' statement
+
+THE NINE FLAVORS OF CALLABLE OBJECTS
+	The call 'operator()' can be applied to other objects beside functions.
+
+	To determine whether an object is callable, use the 'callable()' built-in function
+
+	1. User-defined functions
+		Created via
+			def
+			lambda
+	2. Built-in functions
+		A function implemented in C like
+			len
+			time.strftime
+	3. Built-in methods
+		Methods implemented in C, like
+			dict.get
+	4. Methods
+		Functions defined in body of a class.
+	5. Classes
+		When invoked, a class runs its __new__ method to create an instance, then __init__ to initialize it, finally returns the instance to the caller.
+			Because there is no 'new' operator calling is a class is like calling a funciton.
+	6. Class instances
+		If a class defines a __call__ method, then its instances may be invoked as functions
+	7. Generator functions
+		Functions or methods that use 'yield'
+		They return 'generator' object.
+	8. Native coroutine functions
+		Functions or methods defined iwth 'async def'. When called they return a coroutine object.
+	9. Asynchronous generator functions
+		Functions or methods defined with 'async def' that have yield.
+			They return an asynchronous generator for use with 'async for'.
+
+
+Calling a class usually creates an instance of the same class, but other behaviours are possible by overriding __new__
+
+USER-DEFINED CALLABLE TYPES
+	Arbitrary Python objects may also be made to behave like functions. Implementing a __call__ instance is all it takes.
+
+	Another good use case for __call__ is implementing decorators.		
+	Decorators must be callable
+
+	The functional approach to creating functions with an internal state is to use closures.
+
+Prefixing with ** passes all its items as separate arguments, which are bound to named parameters, with the remaining caught by **attrs
+
+*** KEYWORD-ONLY ARGUMENTS
+	To specify a keyword-only arguments when defining a function, name them after the argument is prefixed with *
+
+	keyword-only arguments do not need to have a default value; they can be mandatory
+
+POSITIONAL-ONLY PARAMETERS
+	to define a function requring POSITIONAL-ONLY parameters, use / in the parameter list.
+
+	All arguments to the left of "/" are positional-only.
+
+PACKAGES FOR FUNCTIONAL PROGRAMMING
+	--< import functools
+	--< import operator
+
+	'itemgetter'
+	'attrgetter'	are factories that build custom functions to pick items from sequences or read attributes from objects
+
+	itemgetter --> supports not only sequences, but also mappings and any class that
+		implements '__getitem__'
+
+	'attrgetter' in contrast to 'itemgetter', creates functions to extract object attributes by name.
+
+The group of names prefixed with i and the name of the operator -- iadd -- stands for augmented assignment operators
+	If the operand is mutable then it does it in "in-place", that is why there is an 'i' prefix
+		If the operand is not mutable then it does what it does normally.
+
+'methodcaller' --> creates a function on the fly
+	similar to itemgetter and attrgetter
+	It creates a function on the fly.
+	The function it creates calls a method by name on the object given as arguments.
+
+
+FREEZING ARGUMENTS WITH functools.partial
+	partial --> given a callable, it produces a new callable with some of the arguments of the original callable bound to predetermined values.
+
+	This is useful to adapt a function that takes one or more arguments to an API that requires a callback with fewer arguments.
+
+	A more useful example of this in normalizing unicodedata
+		Use --> apply_normalize = unicode.normalize('NFC',s)
+				and then we can use this function on the string which we want to convert
+
+	'partial' =-> takes a callable as first argument, followed by an arbitrary number of positional and keyword arguments to bind
+
+	There is a similar 'partialmethod' function that does the same as 'partial', but is designed to work with methods
+

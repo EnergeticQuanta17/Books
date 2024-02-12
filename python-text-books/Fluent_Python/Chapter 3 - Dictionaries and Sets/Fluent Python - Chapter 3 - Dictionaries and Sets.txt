@@ -1,0 +1,303 @@
+'Python is basically dicts wrapped in loads of syntactic sugar'
+
+The core Python constrcuts which are represented by dictionaries in memory are:-
+	Class attributes
+	Instance attributes
+	Module namespaces
+	Function keyword arguments
+
+The "__builtins__.__dict__" stores all built-in types, objects and functions.
+
+Because of their crucial role,	
+	Python "dict"s are highly optimized
+		and continue to get improvements
+	'Hash tables' are the engine behind Python's high performance dicts
+	
+Other built-in types based on hash tables are "set" and "frozenset".
+	they offer richer APIs and operators than sets in other languages.
+	--> python sets implement all the fundamental operators from set theory, like union, intersection, subset tests, etc. --> with them we can express 'Algorithms in a more declarative way, avoiding lots of nested loops and conditionals'
+
+The underlying implementations of "dict" and "set" still relies on 'hash tables'.
+	BUT the "dict" code has two important optimizations that SAVE MEMORY and PRESERVE THE INSERTION ORDER OF THE KEYS	in "dict"
+
+in website, there is more info:- fluentpython.com --> there are explainations about:-
+	1. The hash table algorithm and data strucutres, its use in set
+	2. The memory utilization that preserves key insertion order
+	3. The key-sharing layout for dictionaries holding instance attributes like the __dict__ of user-defined objects.
+
+You must know these operations on "dict"	
+	build
+	unpack
+	process mappings
+
+A 'dictcomp' builds a "dict" instance by taking key:value pairs from any iterable.
+
+**d means "treat the key-value pairs in the dictionary as additional named arguments to this function call.
+	We can apply ** to more than one arguments in a function call. --> this works when keys are all strings and unique across all arguments (duplicate keyword arguments are forbidden)
+	**  can be used inside a dict literal --> in this case duplicate keys are allowed.
+
+match/case also supports 'mappings like dict'
+	Patterns for mappings look like 'dict' literals,--> but actually they can match instances of any actual or virtual subclass of collections.abc.Mapping
+	
+
+A virtual subclass is any classs registered by calling the .register() method of ABC.
+
+About function annotations:
+def kinetic_energy(m:'in KG', v:'in M/S')->'Joules': 
+    return 1/2*m*v**2
+ 
+>>> kinetic_energy.__annotations__
+{'return': 'Joules', 'v': 'in M/S', 'm': 'in KG'}
+
+Order of keys "in patterns" is irrelevant, even if the subject is an OrderedDict
+
+In contrast with sequence patterns, mapping patterns succeed on partial matches.
+	that is, there is no need to use **extra to match extra key-value pairs
+	--> if you want to catch it, then use only one variable with **
+	**_ is forbidden because it would be redundant
+
+
+In 'defaultdict' and other mappings where key lookups via __getitem__ succeed because missing items are created on the fly
+	--> in context of pattern matching, a match succeeds only if the subject already has the required keys at the top of the math statement.
+
+The automatic handling of missing keys is not triggered because pattern matching always uses the d.get(key,sentinel) method --- where the default sentinel is a special marker value that cannot occur in user data. --> IMTERESTING
+
+UNDER ABCs there aree these classes and they contain the following methods:-
+1. Collection
+	__contains__
+	__iter__
+	__len__
+2. Mapping
+	__getitem__
+	__contains__
+	__eq__
+	_ne__
+	get
+	items
+	keys
+	values
+3. MutableMapping
+	__setitem__
+	__delitem__
+	clear
+	pop
+	popitem
+	setdefault
+	update
+ --> here 'Collection' is the superclass for 'Mapping' and 'Mapping' is the superclass for 'MutableMapping'
+
+To implement a custom mapping --> extend from "collections.UserDict"
+	For this keys must be hashable
+
+Hashable conditions:-
+	1. Hash code which never changes during its lifetime (it needs a __hash__ method)
+	2. Hash code can be compared to other objects (it needs an __eq__ method)
+
+Numeric types and flat immutable types(str and 'bytes') are all hashable.
+Container types are hashable if they are immutable and all containted objects are also hashable.
+
+hash code depends of version of Python, machine architecture and salt added.
+
+defaultDict - if you're trying to access an element which is not there, this dict assigns a default value
+OrderedDict - 
+
+Functions in 'dict' or 'defaultdict' or 'OrderedDict' which I do not know about:-
+d.copy() vs d.__copy__()
+d.default_factory --> not a method, but a callable attribute set by the end user when a defaultdict is instantiated.
+d.fromkeys
+d.get
+d.__missing__
+d.move_to_end
+d.__or__
+d.__ior__
+d.pop
+d.__ror__ --> reversed union operator
+d.update
+
+The way d.update(m) handles its first argument m is a prime example of 'duck typing': it first checks whethere m has a keys method
+	and if it does, assumes it a mapping. 	
+	Otherwise, update() falls back to iterating over m, assuming its items are (key,value) pairs.
+The constructor for most Python mappings, uses the logic of update() internally, which means they can be initialized from other mappings or from any iterable object producing (key,value) pairs
+
+use d.get(k,default) instead of d[k] to avoid KeyError throwing
+
+and use .setdefault instead of .get
+	--> uses lesser lookups
+
+Automatic Handling of Missing Keys
+	1. use defaultdict
+	2. another way is to subclass 'dict' or any other mapping and add a __missing__ method.
+
+defaultdict
+	--> when instanciating a defaultdict, we provide a callable to produce a default value whenever __getitem__ is passed a nonexistent key
+
+The behaviour of 'setdefault' and 'update' is also affected by key lookup. 
+	Depending on logic of __missing__, you need to implement special logic in __setitem__ to avoid inconsistent or suprising behaviour
+	DIDNT UNDERSTAND THIS, PLEASE COME BACK TO THIS WHEN YOU HAVE MORE BRAIN
+
+#in book it says python keeps dict sorted by keys. 
+#WHAT'S GOING ON HERE?
+
+The most common reason to use 'OrderedDict' is writing code that is compatible backward compatible with earlier Python versions.
+
+Differences between new 'dict' and 'OrderedDict'
+1. The equality operation for 'OrderedDict' checks for Matching order
+2. popitem() of 'OD' it accepts an optional argument to specify which items is popped.
+3. 'OD' has move_to_end() method to efficiently reposition an element to an endpoint
+4. regular 'dict' was designed to be good at mapping
+	Tracking insertion order was secondary
+5. 'OD' was designed to be good at reordering operations.]
+	Space,ieration speed,performance of updated operations --> were secondary
+6. Algorithmically, 'OD' can handle frequent reordering operations much better than 'dict'
+
+ChainMap is useful to implement interpretors for languages with nested scopes
+	where each mapping represents scope context, from the innermost enclosing scope to the outermost scope.	
+	--> lookup docs, it shows some nice usage of ChainMap
+
+collections.Counter --> A mapping that holds an integer count for each key. updating existing key adds to its count.
+	This can be used to count instances of hashable objects or as a multiset
+
+	To use collections.Counter as a multiset, pretend each key is an element in the set and the count is the number of occurances of that element in the set. WHAAAAAAAAT?
+
+'shelve.Shelf' module
+	Standard library which provides persistent storage for a mapping of string keys to Python objects serialized in the 'pickle' binary format. WHAAAT?
+	pickle jars are kept in shelves
+	
+The 'shelve.open' module-level function returns a shelve.Shelf instance -- a simple key-value DBM database by the 'dbm' module with these characteristics:
+	1. selve.Shelf subclasses abc.MutableMapping, so it provides the essential methods we except of a mapping tyoe
+	2. shelve.Shelf provides a few other I/O management methods, like 'sync' and 'close'
+	3. A 'Shelf' instance is a context manager, hence we can use a 'with' block to make sure it is closed after use
+	4. Keys and valyes are saved whenever a new value is assigned to a key.
+	5. The keys must be all strings.	
+	6. The values must be objects that the 'pickle' module can seralize.
+
+'Pickle' has some drawbacks --> read Ned Batchelder's "Pickle's nine flaws" before adopting any solution involving 'pickle'
+
+OrderedDict, ChainMap, Counter, Shelf --> ready to use but also customized by subclassing
+UserDict is intended only as a base class to be extended. WHHYYYY???????
+
+It is better to create a new mapping type by extending collections.UserDicr rather than dict
+The main reason why is --> the built-in implementation shortcuts that end up forcing us to override methods that we can just inherit from UserDict with no problems. WHAT ARE THOSE METHODS WHICH WE ARE FORCED TO OVER WRITE?????????????????/
+
+
+UserDict does not inherit from dict, but uses composition: it has an internal dict instance, called data, which holds the actual items.	
+	This avoids undesired recursion when coding special methods like __setitem__ and simplifies coding of __contains__
+
+MutableMapping.update
+	it can be called directly
+	OR
+	used by __init__ to load the instance from other mappings from iterables of (key,value) pairs and keyword arguments. LOAD OTHER MAPPINGS AH? WDYM
+	--> it uses self[key]=value hence calling __setitem__
+
+Mapping.get
+	UserDict automatically inherits this method while dict does not
+
+
+There isn't an immutable mapping but a substitute is available.
+
+Maps provided by standard library --> all are mutable.
+
+The 'types' module provides a wrapper class called 'MappingProxyType', which, given a mapping, returns a 'mappingproxy' instance that is a read-only but dynamic proxy for the original mapping.
+	This means that updates to the original mapping can be seen on the 'mappingproxy', but changes cannot be made through it.
+
+.keys(), .values() and .items() are read-only projections of the internal data strucutres used in the dict implementation
+
+The classes dict_values,dict_items,dict_keys are internal: they are not available via __builtins__ or any standard library module
+	we cannot creates a view from scratch in Python code
+
+dict_values implemenets the following methods:-
+	1. __len__
+	2. __iter__
+	3. __reversed__
+
+	--> in addition to those methods, dict_keys and dict_items implement several set methods
+
+
+Keys must be hashable objects.
+Item access by key is very fast.
+Key ordering is preserved as a side effect of a more compact memory layout for dict in CPython 3.6 which became an official language feature in 3.7
+To save memory, avoid creating instance attributes outside of the __init__ method. ---> ????? WHAT DOES THIS MEAN?
+
+Most compact internal data-structure for a container would be an array of pointers.
+	Compared to that, hash table needs to store more data per entry
+	and Python needs to keep atleast one-third of the hash table empty to remain efficient.
+
+Python's default behaviour is to store instance attributes in a special __dict__ attribute which a dict attached to each instance.
+The common hash table is shared by the __dict__ of each new instance that has the same attributes namesas the first instance of that class when __int__ returns.
+Each instance __dict__ can then hold only its own attribute values as a simple array of pointers.
+Adding an instance attribute after __init__ forces Python to create a new hash table just for the __dict__ of that one instance
+
+
+SET THEORY:-
+a|b --> union
+a&b --> intersection
+a-b
+a^b --> symmetric difference
+
+Set elements must be hashable
+If set is not hashable then we cannot build a set with nested instances.
+	But 'frozenset' is hashable, so we can have a frozenset elements inside set.
+
+Set intersection operator works faster than 'in'.
+
+There is no notation for empty set	
+	If you do s={}, s is a dictionary not a set --> instead do s=set()
+
+Sets and frozenset uses:-
+1. Set elements are hashable objects
+2. Membership testing is very efficient.
+3. Thye have significant overhead, compared to --> low-level array pointers to its elements
+4. Element's position depends on hash code.
+5. Adding elements to a set may change the order of existing elements.
+	This is because --> the algorithm becomes less efficient if the hash table is more than two-thirds full, so Python may need to move and resize the table as it grows.
+		After this happens, when elements are reinserted, then order may change.
+
+Set class has the following dunder functions:-
+__le__
+isdisjoint
+__It__
+__gt__
+__ge__
+__eq__
+__ne__
+__and__
+__or__
+__sub__
+__xor__
+
+MutableSet has the following dunder functions;-
+add
+discard
+remove
+pop
+clear
+__ior__
+__iand__
+__ixor__
+__isub__
+
+There are methods which do like this
+	instance_name.method_name(iterator) --> where instance_name is set, method_name like intersection,intersection_update --> these methods take in multiple iterators as parameter and do their function
+		--> so if u want to find (say) union of multiple sets, we can pass them the iterators of these sets as parameters to the function
+
+s1.__ge__(s2) vs s.issuperset(it)
+	the first function takes both set() only as input whereas we can pass an iterator to the second function
+	both methods do the same thing of checking if the left set is a superset of the right set
+
+
+{ dict_items and dict_keys } --> type instances do not support methods like the following
+.copy()
+.difference(it,...)
+.intersection(it,...)
+.issubset(it)
+.issuperset(it)
+.symmetric_difference(it)
+.union((it,...)
+
+return value of & operator on two sets is a set.
+
+'dict_items' view only works as a set if all values in the dict are hashable
+	We can't do set operations on a 'dict_items' view --> an unhashable value --> raises TypeError: unhashable type
+	On the other hand, a 'dict_keys' view can always be used as a set, because every key is hashable
+
+

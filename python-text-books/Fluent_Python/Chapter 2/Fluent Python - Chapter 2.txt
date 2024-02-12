@@ -1,0 +1,448 @@
+Several operations equally works for texts,lists and tables. Texts,lists and tables together are called 'trains'.
+	the FOR command works generically on trains.
+	
+Pythonic --> generic operations on different types of sequences, built-in tuple and mapping types, structure by indetation, strong typing without variable declarations, and more.
+
+What is meant by strong typing?
+"Strong typing" generally refers to use of programming language types in order to both capture invariants of the code, and ensure its correctness, and definitely exclude certain classes of programming errors. Thus there are many "strong typing" disciplines used to achieve these goals.
+Dynamically typed languages (where type checking happens at run time) can also be strongly typed. Note that in dynamically typed languages, values, rather than variables, have types
+Something man... Python is strong-typed, that's all
+
+Understanding the variety of sequences saves us from reinventing the wheel.
+
+Sequences --> sequence is the generic term for an ordered set. 
+	Lists
+	Tuples
+	Byte sequences
+	Byte Arrays
+	Range objects
+	Unicode strings
+
+Built-in Sequences:-
+	Container sequences
+		--> nested containers
+		LIST
+		TUPLE 
+		COLLECTIONS.DEQUE ?????
+	Flat sequences
+		--> hold items of one simple type
+		STR
+		BYTES       ?????
+		ARRAY.ARRAY ?????
+
+A Container sequence holds references to the objects it contains, which may be of "any type".
+Flat sequence --> stores the value of its contents in its own memory space, not as distinct Python objects.
+
+
+(9.46,'cat',[2.08,4.29])
+tuple has an array of references to its items. Each item is a separate python object, possibly holding references to other python objects.
+
+In contrast, python "array" is a single object, holding a C language array of three doubles
+
+The bytes() function returns a bytes object.
+
+It can convert objects into bytes objects, or create empty bytes object of the specified size.
+
+The difference between bytes() and bytearray() is that bytes() returns an object that cannot be modified, and bytearray() returns an object that can be modified.
+
+Flat sequences are compact but limited to holding primitive machine values like bytes, integers and floats.
+
+
+Every python object in memory--> has a header with metadata.
+For example, float has a value field and two metadata fields:
+	ob_refcnt: the object's reference count
+	ob_type: a pointer to the object's type
+	ob_fval: a C double holding the value of the float
+	NOT ABLE TO FIND HOW TO IMPLEMENT THIS (ANGRY FACE😡😡😡)‎
+	
+	On 64-bit system, each of those fields take 8 bytes.
+
+That is the reason float array is much more compact than tuple of floats: the array is a single object holding the raw values of the floats,
+	while the tupleconsists of several objects -- the tuple itself and each float object contained in it.
+
+
+Another way of grouping sequence types is by mutability
+	Mutable Sequences
+		list
+		bytearray
+		array.array
+		collections.deque
+	
+	Immuatable sequences
+		tuple
+		str
+		bytes
+	
+Mutable_Sequences inherit all methods from Immutable Sequences and implement several additional methods.
+	"Sequences and Mutable_Sequences" abstract base classes(ABCs) are virtual subclasses
+
+mutable vs immutable
+container vs flat
+
+List comprehensions :- A powerful way of building lists.	
+	--> this opens the door to generator expressions, which among other uses, can produce elements to fill up sequences of any type
+
+We can use map and filter to do the work of listcomp --> but readability suffers.
+	AND listcomp is much faster than map/filter
+
+Listcomps are one-trick pony: they build lists. To generate data for other sequence types, a genexp is the way to go.
+
+genexp --> saves memory --> because it yields items one by one using the iterator protocol instead of building a whole list just to feed another contructor
+       --> same syntax as listcomps but enclosed with ()
+
+If the generator expression is the single argument in a function call, there is no need to duplicate the enclosing parantheses.	
+	--> in tuple function --> no need to put as tuple takes one argument
+	--> array.array takes two arguments hence put () before and after
+
+First parameter of the array constructor defines the storage type used for the elements in the array.
+
+genexp nevers builds to memory like listcomp
+	--> it just has references	
+	and feeds to for loop
+	--> it saves the cost of building a list with 1M items
+	--> yields items one by one
+
+Tuples do double duty: 1. Immutable lists
+				 2. Records with no field names
+	Sorting tuple destroys the meaning of each field(because each field is given by its position in the tuple)
+
+
+match/case --> _ is a wildcard that matches any value but is not bound to a value. ??????
+	--> in Python console, the result of the preceding command is assigned to _, unless the result is None ?????????
+
+We can use % to do tuple unpacking --> see example in jupyter notebook
+
+Tuple uses less memory than list of the same length
+
+Immutability of tuples only applies to the references contained in it. 
+	--> but if one of the references is a mutable object, and that object is changed, then the value of the tuple changes
+
+Tuples with mutable objects can be a source of bugs
+	--> An object is hashable if its value cannot ever change
+	--> an unhashable tuple cannot be inserted as a "dict" key or a "set" element
+
+To determine if a tuple(or any object) has a fixed value --> use the hash function
+
+Are tuples more efficient than lists:-
+1. To evaliuate a tuple literal, the python compiler(???) generates btyecode for a tuple constant in one operation	
+	--> whereas in list literal, the generated bytecode pushes each element as a separate constant to the data stack and then builds the list
+2. For a given tuple t, tuple(t) just returns reference to t. There is no need to copy
+	-->given list l, the list(l) constructor must create a new copy of l
+3. Because of fixed length --> tuples take finite space
+	--> lists are allocated with room to spare, to amortize the cost of future appends.
+4. The references to the items in a tuple are stored in n array in the tuple struct,
+	while a list holds a pointer to an array of references stored somewhere else
+	WAIT A MINUTE, HOW DOES IT WORK EXACTLY? --> IS IT LIKE AN MAIN ARRAY CONTAINS REFERENCCES TO OTHER SUB ARRAYS IN DIFFERENT PARTS OF MEMORY????????????????
+
+Tuple supports all the list methods that do no involve adding or removing items,
+	with one exception - tuple lacks the __reversed__ method --> this is just for optimization (WHAT OPTIMIZATION???)
+	--> reversed(a) still works without __reversed__ method
+
+
+s.copy() --> does "shallow" copy of the list  --> what does shallow mean?
+
+s.__getnewargs__() --> Support for optimized serialization with "pickle"
+	THIS METHOD IS EXCLUSIVELY FOR TUPLE
+	WHAT IS PICKLE? TASTY 
+
+a.__mul__(b) --> does a*b
+a.__rmul__(b) --> does b*a
+
+Methods I don;t know in lists:-	EXPLORE
+1. s.pop([p])
+2. s.remove(e)
+3. s.sort([key],[reverse])
+
+unpacking works with any iterable object, as long as it returns exactly one item per varible
+	--> unless you use a * to capture excess items {NOTATION:- *var_name}
+		in function calls we can use * multiple times
+		in normal use cases can't use * multiple times
+
+To unpack mappings use ** --> on page 80
+
+PATTERN MATCHING IN PYTHON 3.10:-
+	match-case block
+
+In a sequence pattern --> square brackets and parantheses mean the same thing
+
+Sequence pattern can match instances of most actual or virtual subclasses of collections.abc.Sequence with the exception of "str","bytes" and "bytearray"
+	These are also not handled in match-case
+
+	Match subject of one of those types is treated as an "atomic" value --Like the integer 987 is one value, not sequence of digits
+		Treating those three types as sequences could cause bugs due to unintended matches.
+	If we want to treat an object of those types as a sequence, convert it in the match clause like --> match tuple(string)
+
+The types compatible with sequence patterns:
+	1. list
+	2. memoryview
+	3. array.array	
+	4. tuple
+	5. range	
+	6. collections.deque
+
+Unlike unpacking, patterns don't destructure iterables that are not sequences(such as iterators)
+
+If you want to match any subject sequence with a str, and ending with a nested sequence of two floats, we write:-
+	case [str(name),*_,(float(lat),float(lon))]:
+
+PATTERN MATCHING SEQUENCES IN AN INTERPRETER
+	lis.py has two functions --> parse and evaluate
+	parse splits into tokens kinda thing	
+	evaluate does evaluate obviously like (e.g. if parse generates --> [GCD,18,45]), evaluate evaluates to 9
+
+There are some nice ways to handle the following for "matching the sequences" in case part of match-case
+	1. 2 item sequence starting with 'quote'
+	2. 4 item seq starting with 'if'	
+	3. Match if subject has three or more items and starts with 'lambda'
+		case ['lembda',[*parms],*body]: --> THIS IS NOT WORKING CHECK WHEN FREE ?????????????????
+	4. Match if subject is a three-item sequence starting with define, followed by an instance of "Symbol"
+	5. "catch-all" case using "case _:"
+
+Alternative patterns for lambda
+	suffix ... means the element may appear zero or more times
+	Simple pattern for lambda:
+		case ['lambda',parms,*body] if body:          {The guard ensures thatbody is not empty}
+
+# The sequence pattern * can appear only once per sequence. Here we have two sequences outer and inner
+	Adding the characters [*] around parms made the pattern look more like the Scheme syntax of "lambda" with multiple varibles
+
+Norwig ka ye match-case karte karte, thale suththaide, READ AGAIN WHEN YOU HAVE ENOUGH KNOWLEDGE TO UNDERSTAND IT
+
+Remember, order of "case" matters in match-case.
+
+match does a lot more than switch in C. {But what to do I am a clown and not able to understand}
+	it offers/adds much support
+
+Pattern matching is an example of declarative programming:
+	the code describes "what" you want to match instead of "how" to match it
+
+There is also "Scheme syntax" --> "Sequence pattern", the corresponding seq pattern to mathc the syntax
+	for many examples, check it out. {too lazy to type}
+
+Why Slices and Ranges exclude the last item
+	1. Easy to see the length of a slice or range when only the last stop position is given
+	2. Easy to compute length. stop - start. {IS THIS EVEN AN EXCUSE??? JUST ADD 1, IF WE ARE DOING NORMALLY, HELLO?}
+	3. Easy to split index without overlapping {OK THIS IS A GOOD REASON}
+		a=[10,20,30,40,50]
+		a[:2]=[10,20]
+		a[2:]=[30,40,50]
+
+
+SLICING:- produces a slice object: slice(a,b,c) {it converts string[start:stop:stride] into that thing in left}
+	To evaluate string[start:stop:stide], python calls string.__getitem__(slice(start,stop,stride))
+
+To evaluate a[i,j] --> python calls a.__getitem((i,j))	
+
+Except for memoryview, the built-in sequence types in Python are one-dimensional,  so they support only 1 index or slice and not a tuple of them.
+
+The ellipsis is written with three full stops(...) and not ...(Unicode U+2026).	
+	It is an alisas to ellipsis object.
+	It can be passed as an arguement to functions and as part of a slice specification, for example	
+		f(a,...,z)
+		a[i:...]
+	NumPy uses ... as a shortcut when slicing arrays of many dimensions, see example in JN
+
+	--> ellipsis class name is lowercase and instance name Ellipsis is upper case {USUSALLY IT IS ULTA}
+		just like bool is lowercase but its instances True and False are upper.
+
+Slices can also be used to change mutable sequences in place --> i.e. without rebuilding them from scratch
+
+
++ and * never change their operands. Creates a new sequence.
+	Usually both operands of + must be of same type
+
+my_list=[[]]*3   --> it result in a list with three references to the same inner list
+print(my_list)
+my_list[0].append(1)
+my_list[1].append(2)
+my_list[2].append(3)
+print(my_list)
+	
+
++= and *= also produce very different results depending on mutability of the target sequence.
+	if target sequence is mutable, it is usually changed in-place -- but not always, depending on how the sequence is implemented.
+
+Augmented assignment operators += and *= behave quite differently, depending on first operand.
+	The special method that makes += work is __iadd__
+	THE FOLLOWING STATEMENTS ARE REGARDING --> a+=b
+		if a implements __iadd__ it will be called
+		in the case of mutable sequences a willbe changed in place (i.e. effect will be similar to a.extend(b))
+		if a does not implement __iadd__ then same effect as a=a+b
+			IMPLYING --> the identity of the object bound to "a" may or maynot change depending on the availability of __iadd__
+
+*= is implemented via __imul__
+
+t=(1,2,3)
+t*=2 --> creates a new tuple, differnet address location and all
+	Hence repeated concatenation of immutable sequences are inefficient because instead of just appening new itmems, the interpreter has to copy the whole target sequence to create a new one with new items concatenated
+
+In the book, there is detailed explaination why this happens	
+	If we look at the bytecode that python generates it becomes clear	--> for "s[a]+=b" this happens
+		1. Put the value of s[a] on TOS
+		2. Perform TOS+=b. This succeeds if TOS is a mutable object
+		3. Assign s[a]=TOS --> this fails if s is immutable
+			BUT. TUPLE JUST HAS THE ADDRESS TO FIRST MEMORY LOCATION OF THE LIST. HENCE THE ADDED ELEMENTS ARE ALSO PRESENT IN THE TUPLE.
+	{LOL, THERE IS NO ACTUAL IMMUTABILITY WITH TUPLES}
+
+Three lessons from this:
+	1. Avoid putting mutable items in tuples
+	2. Augmented assignment is not an atomic operation --> it just threw an exception after doing part of its job
+	3. Inspecting python bytecode is not too difficult and can be useful to see whats going on under the hood.
+
+LIST.SORT VERSUS the SORTED built-in
+
+list.sort --> sorts a list in-place
+	without making a copy
+	it returns None to remind us that it changes the receiever and does not create a new list
+	*** --> functions or methods that change an object in-place should return None to make it clear to the caller that the receiever was changed and no new object was created.
+		the disadvantage of this convention is that we cannot cascade function calls. Cascading is still possible when the methods return new objects.
+
+built-in "sorted" function creates a new list and returns it
+	it accepts any iterable object including immutable sequences and generators.
+	regardless of the type of iterable given to "sorted", it always returns a new created list
+		
+Both "list.sort" and "sorted" take two optional, keyword-only arguments:-
+	1. reverse	
+	2. key
+		A one-argument function that will be applied to each item to produce its sorting key. 
+			For example:- while sorting without case sensitivity, use key=str.lower					
+												     use key=len to sortby character length
+		The default is the identity function
+
+You can also use the optional keyword parameter "key" with the min() and max() and with other functions in the standard library like "itertools.groupby()" and "heapq.nlargest()"
+
+python sorts lexicographically
+	non-ASCII characters are unlikely to be sorted in a sensible way.
+
+Binary search algorithm is already provided in the "bisect" module of Python standard library.
+	The module also contains "bisect.insort" to make sure that your sorted sequences stay sorted.??????????????????????
+		LOOK THIS UP NEXT TIME YOU READ, DON;T BE LAZY. https://www.fluentpython.com/extra/ordered-sequences-with-bisect/
+
+If you are processing large lists of numbers, you should consider using arrays instead.
+	saves a lot of memory
+
+If you are constantly adding and removing items from opposite ends of the list, then "deque" is more efficient FIFO data structure.
+
+If your code frequently checks whether an item is present in a collection, consider using a "set", especially if it holds a large number of items.
+	sets are optimized for fast membership checking
+	they are also iterable BUT THEY ARE NOT sequences because the ordering of set items is unspecified
+
+Arrays support mutable sequence operations (including .pop .insert .extend) as well as additional methods for fast loading and saving such as .frombytes and .tofile
+
+array of "float" values does not hold full-fledged "float" instances, but only the packed bytes representing their machine values - Similar to an array of double in C. ???????????
+	'b' in python --> "signed char" in C
+	
+
+There's something called deepcopy exclusively for array
+				   typecode
+				   itemsize
+		
+"array" type does not have an in-place sort method like list.sort()
+	to do it use --> a=array.array(a.typecode,sorted(a))
+
+Memory Views:-
+	The built-in "memoryview" class is a shared-memory sequence type that lets you handle slices of arrays without copying bytes.
+	inspired by the NumPy library
+
+	Travis Oliphant answers the question, "When should a memoryview be used?"
+		A memoryview is essentially a generalized NumPy array structure in Python itself(without the math). 
+		It allows you to share memory between data-structures(things like PIL images, SQLite databases, NumPy arrays) without first copying. This is very important for large data sets.
+
+"memoryview.cast" method --> change the way multiple bytes are read or written as units without moving bits around.
+	"memoryview.cast" returns yet another memoryview object, always sharing the same memory.
+
+If you are doing advanced numeric processing in arrays, you should be using the NumPy libraries.
+
+Let's praise NumPy like anything now:-
+	1. It is the reason wny Python became mainstream in scientific computing applications
+	multi-dimensional
+	homogenous array
+	Matrix types that hold not only numbers but also user-defined records, and provides efficient element-wise operations.
+
+SciPy is written on top of NumPy
+	Scientific computing algorithms from
+		Linear algebra
+		Numerical Calculus
+		Statistics
+	--> it leverages the widely used C and Fortan codebase from the "Netlib Repository"
+	high-level Python APIs + industrial-strength number-crunching functions
+
+To do high-resolution performance measurement timer, use
+	from time import pef_counter as pc
+	t0=pc()
+	floats/=3
+	print(pc()-t0)
+
+numpy.load('.npy',''r+) --> Load the data as a memory-mapped file into another array; this allows efficient processing of slices of the array even if it does not fit entirely the memory
+
+pandas --> implements efficient array types that can hold non-numeric data and provides import/export functions for many formats like
+			.csv
+			.xls
+			SQL dumps
+			HDF5, etc
+
+Most numpy and scipy functions are implemented in C and C++, and can leverage all CPU cores because they release Python GIL (Global Interpreter Lock).
+	A global interpreter lock (GIL) is a mechanism used in computer-language interpreters to synchronize the execution of threads so that only one native thread (per process) can execute at a time. An interpreter that uses GIL always allows exactly one thread to execute at a time, even if run on a multi-core processor.
+	The Python GIL, or Global Interpreter Lock, is a mechanism in CPython (the most common implementation of Python) that serves to serialize operations involving the Python bytecode interpreter, and provides useful safety guarantees for internal object and interpreter state
+	GIL can provide a thread-safe memory management which was much required. It's a simple design as only one lock has to be managed. GIL also provides a performance boost to the single-threaded programs. It makes it possible to integrate many C libraries with Python.
+	It makes non-thread-safe C extensions and libraries easier to integrate into the Python ecosystem. In multithreaded programs, the GIL makes the garbage collector cohesive with the reference counting mechanism. Single-threaded programs are very performant.
+	
+
+"dask" --> used for parallelizing NumPy, Pandas and scikit-learn processing across clusters of machines. These packages deserve entire books about them.
+
+The class "collections.deque" is a thread-safe double-ended queue designed for fast inserting and removing from both ends.
+	--> BEST USE CASE:- to keep a list of "last seem items" or something of that nature--> because deque can be bounded, it discards the item from the opposite end
+
+
+DEQUE:-
+	The optional "maxlen" argument sets the maximum number of items allowed in this instance of deque; 
+		this sets a read-only "maxlen" instance attribute
+
+	Removing elements from the middle of a deque is not as fast.
+	The "append" and "popleft" are atomic, so deque is safe to use as  FIFO queue in multi-threaded applications without the need of locks.
+
+Is Python deep copy or shallow copy?
+	In Python, a shallow copy is a “one-level-deep” copy. The copied object contains references to the child objects of the original object. A deep copy is completely independent of the original object. It constructs a new collection object by recursively populating it with copies of the child objects.
+	AHHHHH EXPLORE WHEN IN BETTER MOOD TO "READ"
+
+
+Other Python standard library packages implement queues:
+1. "queue" --> provides the synchronized (i.e., thread-safe) classes "SimpleQueue", "Queue", "LifoQueue" and "PriorityQueue".
+	these can be used for safe communication between threads.
+	All except "SimpleQueue" can be bounded by provididng a "maxsize" argument greater than 0 to the constructor. 
+	--> However, they DON'T discard items to make room as "deque" does. Instead, when the queue is full, the insertion if a new item blocks - i.e., it waits until some thread makes room by taking an item from the queue, which is useful to throttle the number of live threads.
+
+2. "multiprocessing"
+	Implements its own unbounded "SimpleQueue" and bounded "Queue", very similar to "queue" pacakged
+	--> designed for interprocess communication	
+	--> "multiprocessing.JoinableQueue" is used for task management
+
+3. "asyncio"
+	Provide "Queue", "LifoQueue", "PriorityQueue" and "JoinableQueue" with APIs inspired by the class in "queue and "multiprocessing" modules"
+		but adapted for managing tasks in asynchronous programming.
+
+4. "heapq"
+	does not implement "queue" class
+	provides functions like "heappush" and "heappop" --> and let you use a mutable sequence as a heap queue or priority queue.
+
+
+The official Python "Sorting HOW TO" has several examples of advanced tricks for using "sorted" and "list.sort"
+
+see --> FUTHUR READINGS PART TO LEARN MORE ABOUT THE FOLLOWING
+	1. Python Cookbook
+	2. Structural Pattern Matching, a section of "What's new in Python 3.10"
+	3. memoryview
+	4. BEST BOOK COVERING NUMPY --:> Python Data Science Hand-book by Jake VanderPlas
+							Python for Data Analysis by Wes McKinney
+	5. "NumPy is all about vectorization". Book name :- "From Python to NumPy"
+		Vectorized operations apply mathematical functions to all elementsof an array without explicit loop written in python	
+		operate in parallel
+		leveraging multiple cores
+		delegating GPU
+		In that book shows a speedup of 500 times after refactoring a nice Pythonic class using a generator method into couple of NumPy vector functions.
+	6. See Dijkstra's reasons why indexing must start with 0
+		https://www.cs.utexas.edu/users/EWD/transcriptions/EWD08xx/EWD831.html
+
+		
+SOAPBOX --> didn't like it, didn't read it
+	GO THROUGH IT ONCE, WHEN FREE

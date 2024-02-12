@@ -1,0 +1,126 @@
+Python testing package --> "doctest" --> simulates  console sessions and verifying that the expressions evaluate to the responses shown.	
+	--> KEY FEATURE OF DOCTEST--> they look like transcipts of interactive python console sessions
+
+Fundamental Language Constructs:-
+1. Collections
+2. Attribute access
+3. Iteration
+4. Operator overloading
+5. Function and method invocation
+6. String representation and formatting
+7. Asynchronous programming with "await"
+8. Object creation and destruction
+9. Managed contexts using the "with" or "async with"  statements
+
+Technically both self and this are used for the same thing. They are used to access the variable associated with the current instance. Only difference is, you have to include self explicitly as first parameter to an instance method in Python, whereas this is not the case with Java
+
+Advantages of Python Data Model:
+1. No need to memorize method names.
+2. Avoiding reinvention of wheel(For example choice(deck))
+3. Because __getitem__ delegates to the [] operator of self._cards, our deck automatically supports slicing
+
+Iteration is often implicit. If a collection has no __contains__ method, the "in" operation does a seqeuntial scan.
+"in" works with FrenchDeck class because it is iterable
+
+FrenchDeck implicitly inherts from the "object"class. Because of that --> it behaved as a Python sequence --> and benefit from core language features{iteration and slicing} the __len__ and __getitem__ implementations can delegate all the work to a "list" object, self._cards.
+
+FrenchDeck cannot be shuffled because it is immutable. Values in a tuple can't be changed UNLESS by violating encapsulation and handling the _cards attribute directly
+
+Special methods/dunder methods are meant to be called by the Python Interpreter and not by you.
+
+Python variable-sized collections written in C include a struct called "PyVarObj" which has an ob_size field holding the number of items in the colleciton.
+	So by calling len(object_instance_name), it retireves the value of the obj_size field, this is much faster than calling a method.
+
+for i in x: is an invocation of "iter(x)" which in turn calls --> x.__iter__() {and if that is not available then it uses x.__getitem__()}
+
+Dont use special methods unless you are doing MetaProgramming
+
+len, str, iter --> are faster than method calls --> so use them rather than fancy special functions
+
+Important uses of special methods:-
+1. Emulating numeric types
+2. String representation of objects
+3. Boolean value of an object
+4. Implementing collections
+
+__repr__() function returns the object representation in string format. This method is called when repr() function is invoked on the object. If possible, the string returned should be a valid Python expression that can be used to reconstruct the object again.
+
+__abs__ Calculates the absolute value for each element of an array instance (i.e., the element-wise result has the same magnitude as the respective element but has positive sign). For signed integer data types, the absolute value of the minimum representable integer is implementation-dependent????????????????????
+
+__add__() method adds two objects and returns a new object as a resultant object in Python.
+
+__mul__() Let's take an expression x*y where x is an instance of a class A. To perform the __mul__ method, the operator looks into the class of left operand(x) for the present of __mul__ i.e., operator(*) will check the class A for the presence of ' __mul__ ' method in it. If it has __mul__ method, it calls x
+
+!r calls repr() (which calls __repr__ internally) on the object to get a string. It makes no sense to ask for the representation of an object in the definition of its __repr__. That's recursive, which is what the traceback tells you. There is no requirement that the representation of the object has to to be evaluable, and Python does not create this sort of representation for you.??????
+
+#This is the expected behaviour of infix operators --> to create new Objects and not touch their operands
+
+f-string in our __repr__ uses !r to get the standard representation of the attributes displayed
+
+__str__ is called by the str() built-in and implicitly called by the print function. 
+	Sometimes __repr__ is user friendly enough to not code __str__ becuse the implementation inherited from the object class calls __repr__ as a fallback
+
+Choose to implement __repr__ over __str__
+
+bool(x) calls x.__bool__() and uses the result
+	--> if __bool__() is not implemented then , python tries to invoke x.__len__() and if that returns zero, bool returns False. otherwise True
+	--> The special method __bool__ allows objects to follow the truth value testing rules defined in the "Built-in Types" chapter of "The Python Standard Library" documentation
+
+Three essential interfaces that every collection should implement:-
+1. Iterable as in __iter__ --> to support unpackaging and other forms of iteration
+2. Sized as in __len__ --> to support "len" built-in funciton
+3. Container as in __contains --> to support "in" operator
+
+Three important specializations of Collection are:-
+1. Sequence--> which has the following stuff in it
+	__getitem__
+	__contains__
+	__iter__
+	__reversed__
+	index
+	count
+
+	--> formalizing the interface of built-ins like "list" and "str"
+2. Mapping --> implemented by "dict", "collections.defaultdict",etc
+	__getitem__
+	__contains__
+	__eq__
+	__ne__
+	get
+	items
+	keys
+	values
+
+3. Set --> the interface of the "set" and "frozenset" built-in types
+	disjoint
+	__le__
+	__It__
+	__gt__
+	__ge__
+	__eq__
+	__ne__
+	__and__
+	__or__
+	__sub__
+	__xor__
+
+Only "Sequence" is "Reversible" because they support ordering while "mapping" and "set" do not
+
+dict type is ordered BUT only the key insertion order is preserved. Cannot rearrange
+
+All special methods in "Set" ABC implement 'infix operators'.
+	eg:- a & b computes intersection and is implemented by __and__
+
+Check-out "The data model" of "The Python Language Reference" --> 80 special function names
+
+__matmul__, __rmatmul__, __imatmul__ --> to support the use of @ as an infix operator for matrix multiplication
+
+Python calls reversed operator on second operator if the corresponding method cannot be used on the first operand
+
+Augmented assignments (like a+=b) are shortcuts combining an infix operator with variable assignment
+
+decimal.Decimal , fractions.Fraction supports infix operators
+
+NumPy libraries support infix operators with matrices and tensors
+
+Implementing operators --> included reverse operations and augmented assignment --> is shown in Chapter 16

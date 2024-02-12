@@ -1,0 +1,10 @@
+Cpython --> interface with C code and pass information from the C program to Python and vice versa. This allows to use legacy code(e.g. FFTW)
+
+Scipy and numpy makes integrating legacy code easy
+
+The term broadcasting describes how numpy treats arrays with different shapes during arithmetic operations
+
+Masking of elements in an array if we want to remove some elements (rather than creating a new array)
+
+Numpy --> ODE, special functions, optimizations, integration
+

@@ -1,0 +1,10 @@
+Important terms to know in RL:-
+1. Markov chains
+2. Markov decision processes
+3. Monte Carlo methods
+4. Temporal difference(TD) learning methods
+5. Q-learning
+6. Policy gradient algorithms
+7. Actor-critic methods
+8. Model-based methods
+9. Multi-agent reinforcement learning

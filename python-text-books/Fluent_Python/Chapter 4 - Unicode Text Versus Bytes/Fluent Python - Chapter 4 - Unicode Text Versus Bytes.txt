@@ -1,0 +1,215 @@
+The Unicode standard explicitly separates the identity of characters from specific 'byte' representations:
+	1. 
+	*Unicode characters*
+	--> The identity of a character -- its 'code point' --
+	is a number from 0 to 1114111 (base 10)
+	shown in the Unicode standard as 4 to 6 hex digits with the *U+* prefix from U+0000 to U+10FFFF
+	About 13% of the valid code points have characters assigned to them in Unicode 13.0.0
+
+
+	2. The actual bytes that represent a character depend on the encoding in use.
+	An encoding is an algorithm that converts code points to byte sequences and vice versa.
+	
+
+Slices of 'bytes' are also 'bytes' -- even slices of single byte
+
+A slice of 'bytearray' is also a 'bytearray'
+
+The fact that my_bytes[0] retrives an int but my_bytes[:1] returns a 'bytes' sequence of length 1 is only surprising because we are used to Python's str type where s[0]==s[:1]
+	For all other sequence types in Python, 1 item is not the same as slice of length 1.
+
+Although binary sequences are really sequences of integers, their literal notation reflects the fact taht ASCII text is often embedded in them.
+Therefore there are 4 different displays used, depending on each byte value:-
+	1. For 'bytes' with decimal codes 32 to 126 the ASCII character itself is used.
+	2. For 'bytes' corresponding to tab,carraige-return,newline,\ --> escape sequences are used
+	3. If both ' and " appear in a byte sequence, then the whole sequence is delimited by ' and any ' inside are escaped as \'     WHAT HAPPENED TO "
+	4. For other byte values, a hexadecimal escape sequence is used (eg:- \x00 is the null byte)
+
+Both 'bytes' and 'bytearray' support every 'str' method except those that do formatting --> (format,format_map)
+	and those that depend on Unicode data, including casefold,isdecimal,isidentifier,isnumeric,isprintable and encode --> these are all functions that are not supported by bytes and bytearray
+
+This means we can use other string methods like:-
+endswith
+replace
+strip
+translate
+upper
+and others
+
+'re' also works on binary sequences, if the regex is compiled from a binary sequence instead of a str --> OHHH NICE
+	% operator works with binary sequences		????????????????
+
+Binary sequences have a class method that str does not have called --> fromhex which builds binary sequence by parsing pairs of hex digits optionally separated by spaces.
+
+The other ways of building bytes or bytearray instances are calling their constructors with:-
+	1. A 'str' and an 'encoding' argument
+	2. An iterable providing items with values from 0 to 255
+	3. An object that implements the buffer protocol (e.g. bytes,bytearray,memoryview,array.array) that copies the bytes from the source object to the newly created binary sequence.
+
+% operator works with binary sequences.
+
+Creating a 'bytes' or 'bytearray' object from any buffer-like source will alwayus copy the bytes.	
+	In contrast, 'memoryview' let you share memory between binary data structures.
+
+Python distribution bundles more than 100 codecs(encoder/decoder) for text to byte conversion and vice versa.
+
+Each codec has a name, like 'utf_8' and often aliases such as 'utf8','utf-8','U8.
+
+We can use encoing argument in functions like
+	open()
+	str.encode()
+	bytes.decode()
+
+Some encodings cannot represent every Unicode character.
+UTF ---> are designed to handle every unicode code point.
+
+ANSI by Windows --> cp1252
+Original of IBM PC --> cp437
+
+97% --> utf-8 is used -- 8bit encoding
+
+utf-16le
+One form of the UTF 16-bit encoding scheme; all UTF-16 encodings support code points beyond U+FFFF. 
+	As of 2021, more than 57% of the allocated codepoints are above U+FFFF, including all emojis.
+
+"UnicodeError" exception when converting from str to binary or exception when converting binary to str
+Loading Python modules may also raise "SyntaxError" when the source encoding is unexpected.
+
+When we get UnicodeError, we have to first check if it is "UnicodeEncodeError" or "UnicodeDecodeError" or some other error like Syntax error that mentions an encoding problem
+
+Most non-UTF codecs have small subset of characters, hence they raise error if a character is not defined in the target encoding. --> UnicodeError will be raised, unless special handling is provided by passing an 'errors' argument to the encoding method or function.
+
+The 'codecs' error handling is extensible. We may register extra string for the 'errors' argument by passing a name and an error handling function to the 'codecs.register_error' function
+
+Use str.isascii() to check 100% pure ASCII.
+
+Not every byte holds a valid ASCII character, and not every byte sequence is valid UTF-8 or UTF-16
+
+On the other hand, many legacy 8-bit encodings like 'cp1252','iso8858_1' and 'koi8_r' are able to decode any stream of bytes, including random noise, without reporting errors.
+	Therefore, if your program assumes the wrong 8-bit coding it will silently decode garbage.
+
+Default encoding for Python is UTF-8 across all platforms.
+
+We need to convert the 'cp1252' to UTF-8
+
+How to DISCOVER the encoding of a byte sequence
+	TL;DR --> we can't
+	HTTP and XML--> contain headers that explicitly tell how the content is encoded.
+	
+The way UTF-8 is designed, its almost impossible for a random sequence of bytes, or even a nonrandom sequence of bytes coming from a non-UTF-8 encoding to be decoded accidentally as garbage in UTF-8 instead of raising UnicodeDecodeError
+	Escape sequences of UTF-8 have bit patterns that are very hard for random data to be valid  by accident
+TL;DR --> if u decode bytes > 127, as UTF-8 then its probably UTF-8
+
+There is a package, "Chardet--The Universal Character Encoding Detector" works to guess one of more than 30 supported encodings.	
+	Chardaet is a Python library that can be used in programs as well as in command-prompt using the keyword "chardetect" and 
+		syntax --> chardetect 04-text-byte.asciidoc
+			output:- 04-text-byte.asciidoc: utf-8 with confidence 0.99
+
+Binary sequences dont carry explicit hint about their encoding.
+	however UTF formats may prepend a byte order mark to the textual content.
+
+In UTF-16, the bytes '\xff\xfe' --> is a BOM -- byte order mark -- denoted in little endian
+	The starting part is called --> ZERO WIDTH NO-BREAK SPACE (U+FEFF)
+	This can be done because by design, there is no U+FFFE character in Unicode
+There is big-endian version of this too --> UTF-16BE --> then a BOM is not generated
+
+This whole endian-ness is because UTF-16 uses 2 bytes to store.
+
+For UTF-8, BOM is not needed.
+
+But still Notepad puts BOM
+	The UTF-8 encoding with BOM is called UTF-8-SIG in Python's codec registry.
+		It is U+FEFF --> b'\xef\xbb\xbf'
+
+
+Code that has to run on multiple machines or on multiple occasions should never depend on encoding defaults.	
+	So always give the encoding= arguementwhen opening text files --> because the default changes from one machine to another
+
+	Always use the UTF-8-SIG codec while reading UTF-8 files. It is harmless because UTF-8-SIG reads files with or without BOM.	
+	While writing use UTF-8
+	Python scripts can be made executable in Unix systems if they start with the comment #!usr/bin/env python3
+	The first two bytes must be # and !. but the BOM breaks that convention. If you have a specific requirement to export data to apps that need the BOM, use UTF-8-SIG but be aware that --> usage of BOM in UTF-8 should be avoided.
+
+Do not open in binary mode, just "Chardet"
+
+Orfinary cide should only use binary mode to open binary files, like raster images.
+
+OMGGGGGGGGGG--> use 'eval()' function to run a string
+
+The best way to handle text I/O is the "Unicode sandwich"
+	--> decode to str A.S.A.P. 
+	We should never encode or decode inbetween.
+	
+In Python
+	.read()
+	.write(str)
+
+Codes that run on multiple machines should never depend on encoding defaults. Always pass an explicit 'encoding'
+
+locale.getpreferredencoding() --> is the most important setting to look out for.
+
+
+EMOJIS --> depend on font of the console --> EXACTLY. 
+	while doing CN project. I used Character map to do boxes. There were different fonts. the have different unicodes?
+	whats going on in Character Map?
+
+ 
+If box, or any unusual character comes instead of expected character --> then there is not enough glyph to display it.
+
+It seems the active code page does matter, not in a sensible or useful way, but as partial examination of a bad Unicode experience.
+
+Normalization forms --> NFC and NFD
+
+Keyboard drivers use NFC by default.
+NFC --> is the normalization form recommended by the W3C
+
+Two other normalization forms are NFKC nad NFKD --> where K stands for compatibility
+	They are stronger forms of normalization -> affecting the so called 'compatibility characters'
+
+In those forms --> each compatibility character is replaced by a "compatibility decomposition" of one or more characters that are considered a "preferred" representation, even if there is a formatting loss --ideally formatting is a concern of external markup, not part of Unicode.
+See Jupter Notebook for example --> representation of 1/2
+
+normalize function knows nothing about formatting.	
+	NFKC and NFKD --> may lose or distort information
+	but they can produce convenient intermediate representations for searching and indexing
+	--> should not be used for permanent storing
+	--> should be used only for searcging and indexing
+
+str.casefold() --> produces the same result as str.lower() --> EXCEPT
+	'mu' is changed to Greek Lowercase 'mu'
+	German Eszett(looks like beta) becomes 'ss'
+
+Case folding is a hard issue with plenty special cases.
+
+
+IMP:-  use NFC normalization and str.casefold() --> for case insensitive comparisons
+
+str.maketrans(x,y)
+Mapping table to replace a single character from x to its corresponding character in y
+
+str.maketrans(x)
+	x --> dict mapping from characters to strings
+
+Sorting unicode data --> python sorts by comparing the code points
+
+The standard way to sort non-ASCII text in Python is to use the 'locale.strxfrm' function
+	--> this function transforms a string to one that can be used in locale-aware comparisons.
+
+str.isAlpha() --> returns true if every character in label belongs to one of these categories: Lm, Lt, Lu, Ll or Lo. --> LEARN MORE.
+
+unicodedata.name("A") --> CAPITAL LETTER A
+	LATIN SMALL LETTER A WITH TIDLE
+	BLACK CHESS QUEEN
+	
+re --> works on tamil numbers also
+
+use re.ASCII --> this is a flag that makes \w,\W,\b,\B,\d,\D,\s and \S perform ASCII-only matching
+
+GNU/Linux kernel are not Unicode savvy
+	in order to work with this problem
+	all 'os' module functions that accept filenames or pathnames take arguments as str or bytes. 
+		if file is called with 'str' then the argument will be automatically converted using the codec named by sys.getfilesystemencoding()
+
+There is a 28 line code to search for characters by name
+
+READ THE FURTHUR READING PART AND SOAPBOX FOR THIS CHAPTER

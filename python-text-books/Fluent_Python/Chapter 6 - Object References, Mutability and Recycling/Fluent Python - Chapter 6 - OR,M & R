@@ -1,0 +1,116 @@
+Variables in python are not boxes
+
+Think of variables as sticky notes
+
+"With reference variable", it makes much more sense to say that the variable is assigned to an object, and not the other way around.
+
+Afterall, Object is created before assignment.
+
+Left hand side is just a label stuck to whatever we got from evaluating right side.
+
+== --> compares the value stored in it and not the Object instance itself
+
+id() of an object never changes
+	id() --> returns an integer representing its identity
+
+The real meaning of an object's ID is implemetation dependent. --> depends on the interpreter.
+	But it is garunteed that it will be unique and it will never change during the life of the object.
+
+We usually use 'is' operator insteaf of id()
+
+We need to understand whether the references are aliases or point to different objects.	
+	--> If the references are in different contexts -- such as different stack frames -- using the 'is' opeator may not be viable.
+
+If we are comparing a variable to a Singleton, use 'is' operator.
+	'None' --> is the most used Singleton.
+	
+Sentinel objects are another example of singletons we test with 'is'.
+		--> in this case 'is' is faster than '=='
+				because it is not overloaded
+				whereas == is a syntactic sugar which calls __eq__ method inherited from 'object' class compares object IDs
+	
+THE RELATIVE IMMUTABILITY OF TUPLES
+	Immutability of tuples refers to the physical contents of the 'tuple' data structure and not the referenced objects that it contains.
+
+	If a mutable thing exists inside tuple, its 'id()' never changes.
+
+** A copy is an equal object with different ID
+
+Copies are SHALLOW by default.
+
+Shallow copy --> the outermost container i duplicated, but the copy is filled with references to the same items held by the original container.
+
+'copy' module --> provides 'deepcopy' and 'copy' functions to do 
+							deep      and shallow copies of arbitrary objects.
+
+Not that making deep copies is not a simple matter in the general case.
+	Objects might have cylic references that would cause a naive algorithm to enter an infinite loop.
+	The 'deepcopy' function remembers the objects already copied, to handle cyclic references gracefully.
+
+A deep copy may be too deep in some cases. For example, objects may refer to external resources or singletons that should not be copied. 
+	You can control the behaviour of both 'copy' and 'deepcopy' by implementing the __copy__() and __deepcopy__() special methods
+
+FUNCTION PARAMETERS AS REFERENCES
+	The only mode of parameter passing in Python is 'call by sharing'
+	Call by sharing --> each formal parameter of the function gets a copy of each reference in the arguments.
+	IN OTHER WORDS	
+		The parameters in the function become aliases of the actual arguments.
+
+	The result of this scheme is that a function may change any mutable object passed as a parameter, but it cannot change the identity of those objects
+
+Another issue related to function parameters is the use of mutable values for defaults.
+
+MUTABLE TYPES AS PARAMETER DEFAULTS --> BAD IDEA
+	Default values allows our APIs to be backward compatible.
+
+	See JPN for example.
+	The problem is that HauntedBus instances that don't get an initial passenger list end up sharing the same passenger list among themselves.
+		--> this happens because self.passengers becomes an alias for the default value of the passengers parmeter. 
+		--> The problem is that each default value is evaluated when the funtion is defined -- usually when the module is loaded -- and the default values become attributes of the function object itself
+			--> see HauntedBus.__init__.__defaults__ in JPN
+
+	This is why 'None' is commonly used as the default value for mutable parameters
+
+DEFENSIVE PROGRAMMING WITH MUTABLE PARAMETERS
+	When you are coding a function that receives a mutable parameter, you should carefully consider whether the caller expects the argument passed to be changed.
+
+	Unless a method is explicitly intended to mutate an object received as an argument, you should think twice before aliasing the argument object.
+		IF in doubt, just copy.
+
+'del' is not a function
+	its a statement
+
+'del' deletes references,  AND NOT THE OBJECT ITSELF.
+
+There is a __del__() special method, but it does not cause the disposal of the instance, and should not be called by your code.
+	It is used by the Python interpreter when the instance is about to be destroyed to give it a chance to release external resources.
+
+In CPython, the primary algorithm for garbage collection is reference counting. It keep track of how many references point to it and when it reaches 0, the object is destroyed (i.e. it calls __del__ method)
+
+In CPython 2.0, a generational garbage collection algorithm was added to detect groups of objects involved in reference cycles -- which may be unreachable even with outstanding references to them, when all the mutable refernences are contained within a group. WHAAAAAAAAAAAAAT?
+	
+	weakreferences do not increase reference count.
+		weakreferences is a very specialized topic
+
+TRICKS PYTHON PLAYS WITH IMMUTABLES
+	t[:] does not make a copy of tuple, but returns reference to the same object
+	This same behaviour can be obsevered with instances of 'str', 'bytes', 'frozenset'.
+		Note that frozenset is not a sequence, hence fs[:] does not work on it.
+		However, frozenset.copy() has the same effect: it cheats and returns a reference to the same object, and not a copy at all.
+
+The sharing of string literals is an optimization technique called "interning".
+
+Never depend on 'int' or 'str' interning. Always use == instead of 'is' to compare strings or integers for equality
+
+Augmented assignment with += or *= creates new objects if the lefthand variable is bound to an immutable object, but may modify a mutable object in-place.
+
+The type of the object may be changed by merely assigning a different class to its __class__ attribute, but that is pure evil and I regret writing this footnote.
+
+
+THE FOLLOWING ARE USED TO KEEP TRACK OF ALL ITS CURRENT INSTANCES.
+WeakValueDictionary
+WeakKeyDictionary
+WeakSet
+and the 'finialize' function from the 'weakref' module
+
+

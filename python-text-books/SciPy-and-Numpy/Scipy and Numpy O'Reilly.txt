@@ -1,0 +1,244 @@
+Cpython --> interface with C code and pass information from the C program to Python and vice versa. This allows to use legacy code(e.g. FFTW)
+
+Scipy and numpy makes integrating legacy code easy
+
+The term broadcasting describes how numpy treats arrays with different shapes during arithmetic operations
+
+Masking of elements in an array if we want to remove some elements (rather than creating a new array)
+
+Numpy --> ODE, special functions, optimizations, integration
+
+Numpy and Scipy work on 3 platforms:- the Enthought Python Distribution(EPD)
+						  Active Python(AP)
+
+They are opensource lookup the implementations :)
+
+Lists cannot broadcast by default, so a function is coded to emulate what an ndarray can do.
+
+Difference between range and arange --> range is a built-in Python class, while arange() is a function that belongs to a third-party library (NumPy)
+	Numpy does it it very fast.
+
+np.zeros([5,5]) and np.zeros((5,5)) --> works the same
+
+Numpy by-default uses 64-bit precision
+
+To flatten arrays --> ARRAY_NAME.ravel()
+
+To reshape --> np.reshape(ARRAY_NAME, SIZE) "OR" ARRAY_NAME.reshape(SIZE)
+
+Reshaping and ravel-ing --> Changes to made to newly created array is reflected on the array on which the reshape/ravel operation was made
+	To avoid this use np.copy()
+
+Arrays --> can store complex data structures where
+	columns --> different data types are called RECORD ARRAYS
+	To do this use --> np.recarray()
+
+recarr=np.zeros((2,),dtype=('i4,f4,a10')) -->   i4 is 32-bit integer
+								f4 is 32-bit float
+								a10 is 10-characters string
+
+	The string part is actually stored as numpy.bytes_ --> to convert back to string use --> THAT_THING.decode('UTF-8')
+
+To integrate different data types and assign to numpy record arrays:-
+	use "zip" function, to create list of tuples
+	zip(col1,col2,col3)
+
+RECORD ARRAYS --> we can give any name of our wish to the data_types too
+	RECORD_NAME.dtype.names=("integers","floaty","string")
+	--> condition: we must rename all at once
+
+	and then access them via column names
+	>> recarr('Integers')
+
+To work with data tables --> high-level package --> "ATpy"
+	allows user to read, write, convert data tables from FITS,ASCII,HDF5,SQL formats
+
+Boolean Indexing:-array=[1,2,3] 
+			array=np.array(array)
+			array=np.array(array)
+			lol=array>1
+			print(lol)
+
+			new_arr=array[lol]
+			print(new_arr)
+			
+
+			OUTPUT:- 
+			[False True True]
+			[2 3]
+
+
+Similar to above exmaple but using "np.where(...)"
+	a = np.array([[1, 2, 3], [4, 5, 6]])
+  
+	print(a)
+  
+	print ('Indices of elements <4')
+  
+	b = np.where(a<4)
+	print(b)
+  
+	print"Elements which are <4")
+	print(a[b])		
+
+	OUTPUT:-
+	[[1 2 3]
+	 [4 5 6]]
+	Indices of elements <4
+	(array([0, 0, 0], dtype=int64), array([0, 1, 2], dtype=int64))
+	Elements which are <4
+	[1 2 3]
+
+
+"np.where()" vs "boolean indexing" --> boolean indexing is faster for a large number of elements
+	>> If we can easily invert True and False objects in an array by using "~index", a tehcnique that is far faster then redoing the numpy.where() function
+
+Numpy --> "|" and "&" allows fast comparisions of boolean values
+	anyone who knows formal logic --> what we can do with NumPy is a natural extension to working with arrays
+	{WHY NEED FORMAL LOGIC LOL}
+	--> These comparision of boolean values important in "IMAGE PROCESSINGs"
+
+
+Boolean expressions follow --> PEDMAS rule
+
+100-element array with random values from standard normal distribution or Gaussian Distribution (sigma=1 and mean=0)
+	import numpy.random as rand
+	>> rand.randn(100)
+
+
+List gives more decimal places than numpy.array
+	--> maybe internally numpy as more (OFCOURSE 99%, MAYBE NOT 1%)
+
+Python file parsing is faster than C.
+
+Files are opened in type --> <class '_io.TextIOWrapper'>
+
+When you open files in w, it immediately erases the contents of the file. The contents are updated only after calling f.close()
+
+If files have too much data, then to better organize --> getting data into "numpy.ndarray" is the best option
+	>> use "numpy.loadtxt" for this
+	arr=np.loadtxt("try.txt")
+	np.savetxt("try.txt")
+
+	--> loadtxt not working >> CHECK IT OUT
+
+	
+	If each column is different in terms of formatting, loadtxt can still read the data, but column types ahve to be predefined. --> it will result in a recarray
+
+
+There is a downside to recarr objects there is no dependable and automated way to save numpy.recarray data structures in text format
+	If saving recarr is important then it is best to use "matplotlib.mlab" tools
+
+Very very OP package for highly generalized and fast text parsing/witing package in ASCII format --> "Asciitable"
+
+
+Binary files --> {harder because of formatting, readability, portability}
+	Yet the notable ADVANTAGES:- File size and read/write speeds (BIG DATA VERY USEFUL)
+
+	Limitation --> readable only by other system that uses NumPy
+	For portable format use --> "scipy.io"
+	
+	To access use --> "numpy.save" and "numpy.load"
+
+	save and savez --> can save numpy.recarray objects {at the risk of porability}
+
+from scipy.interpolate import UnivariateSpline --> has a parameter called knots --> Knots are cutpoints that defines different regions (or partitions) for a variable. In each regions, a fitting must occurs. The definition of different regions is a way to stay local in the fitting process
+
+Difference between randn and normal under numpy.random
+	randn--> standard normal distribution {SPECIFIC CASE}
+	normal--> Generic normal distribution {GENERIC CASE}
+
+For indefinite integrals --> see "SymPy"
+
+Numerical Integration --> trapz function --> trapz assumes that the function is is ruffly linear between the points you choose. So if you're actually interested in the integral of this polynomial you have to pick a step size for which the assumption is ok
+
+
+Scipy has better statistic tools than NumPy
+
+There are 80 conitinuous distributions and 10 discrete.
+	--> available in scipy.stats
+
+Percent-point functions --> ppf() function calculates the normal distribution value for which a given probability is the required value. These are inverse of each other in this particular sense.
+
+The CDF function for the geometric distribution returns the probability that an observation from a geometric distribution, with the parameter p, is less than or equal to m
+
+There are 60 statistical functions in SciPy
+	--> like the "Kolmogorov-Smirnov test"
+	stats package has --> kstest and normaltest
+
+Descriptive functions in statistics:
+	1. geometric mean(gmean)
+	2. skewness of a sample(skew)
+	3. frequency of values in a sample(itemfreq)
+	4. Harmonic mean(hmean)
+	5. Trimmed mean(tmean) --> {stats.tmean(sample,limits=(-1,1))}
+	6. A standard normal distribution has kurtosis of 3 and is recognized as mesokurtic. An increased kurtosis (>3) can be visualized as a thin “bell” with a high peak whereas a decreased kurtosis corresponds to a broadening of the peak and “thickening” of the tails. Kurtosis >3 is recognized as leptokurtic and <3.
+s
+More statistical tools needed --> RPy
+
+R is a cornerstone package for statistical analysis and RPy ports those tools to python
+
+Spatial and Clustering analysis --> key to --> Identifying patterns, groups and clusters
+
+Package with good graph theory capabilities --> "NetworkX"
+	--> has "minimum spanning tree analysis"
+
+Spatial analysis --> scipy.spatial --> {Analyze distances between data points[example: k-d trees]}
+Cluster analysis --> scipy.cluster --> {Provides two overarching subclasses: [1. Vector quantization(vq) and 2.Hierarchical Clustering(hierarchy)]}
+
+Vector quantization --> groups large sets of data points where each group is represented by centroids
+hierarchy --> this subclass contains functions to construct clusters and analyze their substructures
+
+
+Vector quantization--> signal processing, data compression, clustering
+
+Hierarchical Clustering --> powerful tool for identifying structures that are nested within larger strucutres.
+	--> working with the output can be tricky.
+
+Scipy --> Read and write image files like JPEG and PNG images
+	files=glob('folder/*.JPG')
+	im1=imread(files[0]).astype(np.float32)
+	imsave('image_name.jpg',im1)
+
+	--> JPG images in python environment are stored in three layers --> RGB
+	
+Sparse matrices --> in scipy much much faster storage and operation calculations speed
+	--> see SciPyPackages/Sparse website for basis on sparse matrices and operations
+
+	--> using "scipy.io", we can read and write common sparse matrix
+
+For usage of binary files, universally,  use "scipy.io.loadmat" and "scipy.savemat"
+
+Programming language IDL to store in binary format and can be read by numpy using scipy.io.readsav
+
+"Matrix Market files"
+	this format is well supported in C and MatLab
+	--> this is used to share matrix data structures written in ASCII format
+	suitable for sparse matrices also
+
+SCIKIT--> 20 packages, complementary to scipy
+
+Scikit-image >> scipy.ndimage
+
+Some of tools of SciPy's ndimage:-
+	1. processing multi-dimensional data
+	2. basic filtering(e.g. Gaussian smoothing)
+	3. Fourier transform
+	4. Morpgology (e.g. binary erosion)
+	5. Interpolation
+	6. Measurements
+
+Scikit-image goes one step furthur to provide more advanced functions for scientific research
+	1. Color space inversion
+	2. Image intensity adjustment algorithms
+	3. Feature detections
+	4. Filters for sharpening 
+	5. Denoising
+	6. Read/write capabilities
+	and more
+
+Thresholding --> segmenting image components from one another
+	Classical Thresholding technique works well when the background image is flat and this is not the case normally --> where background visually will be changing throught the image --> ???????
+
+	
+To find local maxima's in images use --> "skimage.morphology.is_local_maximum"

@@ -1,0 +1,101 @@
+Function decorators --> "mark" functions in the source code to enhance their behaviour in some way.	
+	Very powerful
+	Mastering this needs knowledge of "closures" -- this is what we get when functions capture variables defined outside of bodies.
+
+Closures are also essential for any type of programming using callbacks, and for coding in a functional style when it makes sense.
+
+Powerful decorators in standard library
+	@cache
+	@lru_cache
+	@singledispatch
+
+	functools.cache
+	functools.lru_cache
+	functools.singledispatch
+
+DECORATOR
+	A decorator is a callable that takes another function as an argument.
+
+	A decorator may perform some processing with the decorated function, and returns it or replaces it with another function or callable object.
+
+Decorator are just syntactic sugar
+	We can simply call a decorator like any regular callable, passing another function.
+		This is convenient when doing "metaprogramming" -- changing program behaviour at runtime.
+
+Three essential facts about decorators :-
+	1. A decorator is a function or another callable.
+	2. A decorator may replace the decorated function with a different one.
+	3. Decorators are executed immediately when a module is loaded.
+
+When we return 'func' --> we get references to functions decorated by @register
+
+If we import a code with decorator,
+	the decorator part of code runs.
+
+	Decorated functions are only run if they are explicitly invoked.
+		This highlights the difference between what Pythonistas call "import time" and "runtime"
+
+Usually, a decorator is defined in a different module and applied to many other modules.
+
+In practice, most decorates define an inner function and return that function.
+
+Many python frameworks use decorators to add functions to some central registry --
+	For example:- a registry mapping URL patterns to functions that generate HTTP responses.
+
+Most decorators change the decorator function.
+	They do this by defining a inner function, and return it to replace the decorated function
+	Code that uses inner functions almost always depend on closures to operate properly.
+
+VARIABLE SCOPE RULES
+	1. The module 'global' scope.
+	2. The f3 function scope.
+	3. 'nonlocal' --> which is fundamental for closures.
+
+***Comparing ByteCodes***
+	The 'dis' module provides an easy way to disassemble the bytecode of Python functions.
+	Usage:-	
+		from dis import dis
+		dis(<function_name>)
+
+The CPython Virtual Machine (VM) that runs the bytecode is a stack machine, so LOAD and POP operations refer to stack.
+
+
+<-----------------------------------------CLOSURES----------------------------------------------------------->   
+	Closures are referred to as "anonymous functions"
+		Defining functions inside functions are not so common or convenient until you have anonymous functions.
+		Closures only matter when we have "nested functions".
+
+	Closure is a function with an extended scope that encompasses variables referenced in the body of that function that are not global variables or local variables of that function.
+		Such variables must come from the local scope of an outer function that encompasses the closure function.
+
+		It can access nonglobal variables that are defined outside of its body
+
+		In this example in JPN, averager() is the closure function
+			It encompasses "series =[]" local variable and binds to be a "free-variable"
+
+	A closure is a function that retains the bindings of the free variables that exist when the function is defined, so that they can be used later when the function is invoked and the defined scope is no longer available.
+
+	The only situation in which a function may need to deal with external variables that are nonglobal is when it is nested in another funcition and those variables are part of the local scope of the outer function.
+
+
+THE nonlocal DECLARATION
+	We cannot update immutable type inside a closure function.
+
+	With immutable types like numbers, strings, tuples, etc, we can only read AND never update.
+
+	If u try to rebind them, then you are implicitly creating a local variable 'count'.
+		which is not a free variable, and therefore not saved in the closure.
+
+	To work around this, the 'nonlocal' keyword was introduced.
+		It declares a variable, as a free variable even when it is assigned within the function.
+
+VARIABLE LOOKUP LOGIC
+	When a function is defined, the Python bytecode compiler determines how to fetch a variable x that appears in it, based on these rules:
+		1. If there is a 'global' x declaration, x comes from and is assigned to the x global variable module
+		2. If there is a 'nonlocal' x declaration, x comes from and is assigned to the x local variable of the nearest suurounding function where x is defined.
+		3. If 'x' is a parameter or is assigned a value in the function body, then x is a local variable
+		4. If x is referenced but is not assigned and is not a parameter:	
+			--- x will be looked up in the local scopes of the surrounding function bodies
+			--- else x will be read from the module global scope
+			--- else x will be read from __builtins__.__dict__
+			
